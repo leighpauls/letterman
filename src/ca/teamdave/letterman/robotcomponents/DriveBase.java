@@ -1,5 +1,6 @@
 package ca.teamdave.letterman.robotcomponents;
 
+import ca.teamdave.letterman.RobotPosition;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.RobotPose;
@@ -38,8 +39,16 @@ public class DriveBase implements BackgroundUpdatingComponent {
         double deltaX = velocity * deltaTime * Math.cos(headingRadians);
         double deltaY = velocity * deltaTime * Math.sin(headingRadians);
 
-        mPose = new RobotPose(mPose.getX() + deltaX, mPose.getY() + deltaY, position, headingDegrees);
-        System.out.println(mPose.getX() + ", " + mPose.getY() + ", " + mPose.getHeading());
+        mPose = new RobotPose(
+                new RobotPosition(
+                        mPose.getPosition().getX() + deltaX,
+                        mPose.getPosition().getY() + deltaY),
+                headingDegrees);
+
+        System.out.println(
+                mPose.getPosition().getX() + ", "
+                        + mPose.getPosition().getY() + ", "
+                        + mPose.getHeading());
     }
 
     public void setArcade(double forward, double sideways) {

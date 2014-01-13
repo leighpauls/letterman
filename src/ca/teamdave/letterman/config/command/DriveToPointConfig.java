@@ -4,7 +4,7 @@ import ca.teamdave.letterman.RobotPosition;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 
 /**
- * Configuration for a {@link ca.teamdave.letterman.auto.DriveToPoint} object
+ * Configuration for a {@link ca.teamdave.letterman.auto.commands.DriveToPoint} object
  */
 public class DriveToPointConfig {
     public final RobotPosition endPosition;

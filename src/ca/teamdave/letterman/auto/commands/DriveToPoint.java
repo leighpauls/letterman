@@ -1,4 +1,4 @@
-package ca.teamdave.letterman.auto;
+package ca.teamdave.letterman.auto.commands;
 
 import ca.teamdave.letterman.DriveUtils;
 import ca.teamdave.letterman.PidController;
@@ -26,7 +26,6 @@ public class DriveToPoint implements AutoCommand {
 
         mTurnController = new PidController(config.turnControl);
         mDriveController = new PidController(config.driveControl);
-
 
         mDriveBase = driveBase;
     }
@@ -63,24 +62,24 @@ public class DriveToPoint implements AutoCommand {
 
     public Completion runStep(double deltaTime) {
         Error error = getError();
-        double turnPower, forwardPower;
+        double turnPower, forwardPower, effectiveDistError;
 
         if (error.distanceError > mTurnLockDistance) {
             turnPower = mTurnController.update(deltaTime, 0, error.headingError);
             forwardPower = mDriveController.update(deltaTime, 0, error.distanceError);
-
             // scale forward power based on the the heading
             forwardPower *= Math.cos(error.headingError * Math.PI / 180.0);
+            effectiveDistError = error.distanceError;
         } else {
             // don't try to turn, just, get horizontal with the point
             turnPower = 0;
-            double projectedError = error.distanceError * Math.cos(error.headingError);
-            forwardPower = mDriveController.update(deltaTime, 0, projectedError);
+            effectiveDistError = error.distanceError * Math.cos(error.headingError);
+            forwardPower = mDriveController.update(deltaTime, 0, error.distanceError);
         }
 
         mDriveBase.setArcade(forwardPower, turnPower);
 
-        if (error.distanceError <= mCompleteDistance) {
+        if (Math.abs(effectiveDistError) <= mCompleteDistance) {
             return Completion.FINISHED;
         }
         return Completion.RUNNING;

@@ -1,4 +1,4 @@
-package ca.teamdave.letterman.auto;
+package ca.teamdave.letterman.auto.commands;
 
 /**
  * Interface for all auto commands
