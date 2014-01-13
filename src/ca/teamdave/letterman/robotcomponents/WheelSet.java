@@ -4,7 +4,7 @@
  */
 package ca.teamdave.letterman.robotcomponents;
 
-import ca.teamdave.letterman.robotconfig.WheelSetConfig;
+import ca.teamdave.letterman.config.component.WheelSetConfig;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
 

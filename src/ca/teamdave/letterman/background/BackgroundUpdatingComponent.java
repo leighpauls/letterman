@@ -1,8 +1,8 @@
-package ca.teamdave.letterman;
+package ca.teamdave.letterman.background;
 
 /**
  * Interface for things that need to be updated every cycle, regardless of mode
  */
-public interface UpdatingComponent {
+public interface BackgroundUpdatingComponent {
     void updateComponent(double deltaTime);
 }

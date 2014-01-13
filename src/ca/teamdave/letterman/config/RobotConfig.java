@@ -1,6 +1,9 @@
-package ca.teamdave.letterman.robotconfig;
+package ca.teamdave.letterman.config;
 
 import ca.teamdave.letterman.RobotPose;
+import ca.teamdave.letterman.RobotPosition;
+import ca.teamdave.letterman.config.component.DriveBaseConfig;
+import ca.teamdave.letterman.config.component.WheelSetConfig;
 
 /**
  * Describes the hardware configuration of the robot (sensor pins, pwm channels, scaling factors, etc)
@@ -18,5 +21,5 @@ public class RobotConfig {
             0.007,
             new WheelSetConfig(new int[] {1, 2}, false, 1, 2, false, 318.0),
             new WheelSetConfig(new int[] {3, 4}, true, 3, 4, false, 318.0),
-            new RobotPose(0, 0, 0)));
+            new RobotPose(new RobotPosition(0, 0), 0)));
 }

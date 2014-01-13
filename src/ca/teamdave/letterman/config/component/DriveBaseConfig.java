@@ -1,4 +1,4 @@
-package ca.teamdave.letterman.robotconfig;
+package ca.teamdave.letterman.config.component;
 
 import ca.teamdave.letterman.RobotPose;
 

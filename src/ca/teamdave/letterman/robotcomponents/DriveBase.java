@@ -1,15 +1,15 @@
 package ca.teamdave.letterman.robotcomponents;
 
+import ca.teamdave.letterman.background.BackgroundUpdateManager;
+import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.RobotPose;
-import ca.teamdave.letterman.UpdateManager;
-import ca.teamdave.letterman.UpdatingComponent;
-import ca.teamdave.letterman.robotconfig.DriveBaseConfig;
+import ca.teamdave.letterman.config.component.DriveBaseConfig;
 import edu.wpi.first.wpilibj.Gyro;
 
 /**
  * Controls the driving subsystem
  */
-public class DriveBase implements UpdatingComponent {
+public class DriveBase implements BackgroundUpdatingComponent {
 
     private final WheelSet mLeft;
     private final WheelSet mRight;
@@ -27,7 +27,7 @@ public class DriveBase implements UpdatingComponent {
         mPose = config.initialPose;
         mGyroOffset = mPose.getHeading();
 
-        UpdateManager.getInstance().registerComponent(this);
+        BackgroundUpdateManager.getInstance().registerComponent(this);
     }
 
     public void updateComponent(double deltaTime) {
@@ -38,7 +38,7 @@ public class DriveBase implements UpdatingComponent {
         double deltaX = velocity * deltaTime * Math.cos(headingRadians);
         double deltaY = velocity * deltaTime * Math.sin(headingRadians);
 
-        mPose = new RobotPose(mPose.getX() + deltaX, mPose.getY() + deltaY, headingDegrees);
+        mPose = new RobotPose(mPose.getX() + deltaX, mPose.getY() + deltaY, position, headingDegrees);
         System.out.println(mPose.getX() + ", " + mPose.getY() + ", " + mPose.getHeading());
     }
 

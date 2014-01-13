@@ -8,9 +8,9 @@
 package ca.teamdave.letterman;
 
 
+import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
-import ca.teamdave.letterman.robotcomponents.WheelSet;
-import ca.teamdave.letterman.robotconfig.RobotConfig;
+import ca.teamdave.letterman.config.RobotConfig;
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -37,27 +37,27 @@ public class LettermanMain extends IterativeRobot {
 
     /** Called once at the start of auto */
     public void autonomousInit() {
-        mDrive.reset(new RobotPose(0, 0, 0));
+        mDrive.reset(new RobotPose(new RobotPosition(0, 0), 0));
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
-        UpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates();
         mDrive.setArcade(0, 0);
     }
 
 
     /** Called once at the start of teleop */
     public void teleopInit() {
-        mDrive.reset(new RobotPose(0, 0, 0));
+        mDrive.reset(new RobotPose(new RobotPosition(0, 0), 0));
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
-        UpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates();
         mDrive.setArcade(-mController.getY(), mController.getX());
     }
 
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
-        UpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates();
     }
 }

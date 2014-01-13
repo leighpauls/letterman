@@ -19,5 +19,6 @@ public interface AutoCommand {
         public static Completion FINISHED = new Completion("finished");
     }
 
-    Completion runStep();
+    void firstStep();
+    Completion runStep(double deltaTime);
 }

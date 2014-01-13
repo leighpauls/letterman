@@ -1,7 +1,7 @@
-package ca.teamdave.letterman.robotconfig;
+package ca.teamdave.letterman.config.component;
 
 /**
- * Configuration for {@link ca.teamdave.letterman.robotconfig.WheelSetConfig}
+ * Configuration for {@link WheelSetConfig}
 */
 public class WheelSetConfig {
     public final int[] victorChannels;
