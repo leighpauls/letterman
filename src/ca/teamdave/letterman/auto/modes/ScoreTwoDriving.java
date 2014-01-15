@@ -4,6 +4,8 @@ import ca.teamdave.letterman.RobotPose;
 import ca.teamdave.letterman.RobotPosition;
 import ca.teamdave.letterman.auto.commands.*;
 import ca.teamdave.letterman.auto.commands.dummy.DummyShoot;
+import ca.teamdave.letterman.auto.commands.meta.Pause;
+import ca.teamdave.letterman.auto.commands.meta.Series;
 import ca.teamdave.letterman.config.command.DriveToPointConfig;
 import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
@@ -53,8 +55,10 @@ public class ScoreTwoDriving implements AutoMode {
                 new DummyShoot(),
 
                 new TurnToHeading(new TurnToHeadingConfig(0, 2, turnPidConfig), mDriveBase),
+                // TODO: run pickup here
                 new DriveToPoint(driveBackToBall, mDriveBase),
                 new Pause(0.5),
+                // TODO: stop running pickup here
 
                 new DriveToPoint(driveOut, mDriveBase),
                 new TurnToHeading(new TurnToHeadingConfig(-20, 2, turnPidConfig), mDriveBase),

@@ -1,11 +1,8 @@
 package ca.teamdave.letterman.auto.commands;
 
-import ca.teamdave.letterman.DriveUtils;
-import ca.teamdave.letterman.PidController;
-import ca.teamdave.letterman.RobotPose;
+import ca.teamdave.letterman.*;
 import ca.teamdave.letterman.config.command.DriveToPointConfig;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
-import ca.teamdave.letterman.RobotPosition;
 
 /**
  * Drive the robot to a point on the field
@@ -49,7 +46,8 @@ public class DriveToPoint implements AutoCommand {
         } else {
             // drive backwards to the target
             result.distanceError = -absoluteDistanceError;
-            result.headingError -= 180 * Math.signum(result.headingError);
+
+            result.headingError -= 180 * Util.sign(result.headingError);
         }
         return result;
     }

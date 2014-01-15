@@ -1,6 +1,6 @@
 package ca.teamdave.letterman.auto.commands.dummy;
 
-import ca.teamdave.letterman.auto.commands.Pause;
+import ca.teamdave.letterman.auto.commands.meta.Pause;
 
 /**
  * Place holder for the shoot command

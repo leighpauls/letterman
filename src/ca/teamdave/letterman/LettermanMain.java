@@ -8,6 +8,9 @@
 package ca.teamdave.letterman;
 
 
+import ca.teamdave.letterman.auto.AutoModeRunner;
+import ca.teamdave.letterman.auto.modes.AutoMode;
+import ca.teamdave.letterman.auto.modes.ScoreTwoDriving;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
 import ca.teamdave.letterman.config.component.RobotConfig;
@@ -24,6 +27,7 @@ import edu.wpi.first.wpilibj.*;
 public class LettermanMain extends IterativeRobot {
     private Robot mRobot;
     private Joystick mController;
+    private AutoModeRunner mAutoModeRunner;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -34,14 +38,19 @@ public class LettermanMain extends IterativeRobot {
         mController = new Joystick(1);
     }
 
+
     /** Called once at the start of auto */
     public void autonomousInit() {
-        mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
+        // TODO: pick this mode from a list
+        AutoMode mode = new ScoreTwoDriving(mRobot.getDriveBase());
+        mRobot.getDriveBase().reset(mode.getInitialPose());
+        mAutoModeRunner = new AutoModeRunner(mode);
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates();
-        mRobot.getDriveBase().setArcade(0, 0);
+        // TODO: actually measure deltaTime, rather than assume it's right
+        mAutoModeRunner.runCycle(0.02);
     }
 
 

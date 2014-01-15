@@ -1,4 +1,6 @@
-package ca.teamdave.letterman.auto.commands;
+package ca.teamdave.letterman.auto.commands.meta;
+
+import ca.teamdave.letterman.auto.commands.AutoCommand;
 
 /**
  * Pause to simulate functions for hardware that doesn't exist yet
