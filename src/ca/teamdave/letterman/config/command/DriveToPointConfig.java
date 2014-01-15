@@ -11,7 +11,7 @@ public class DriveToPointConfig {
 
     /** Distance from the target where turning is no longer tried */
     public final double turnLockDistance;
-    /** Distanace from the target where the command is "completed" */
+    /** Distance from the target where the command is "completed" */
     public final double completeDistance;
 
     public final PidControllerConfig turnControl;

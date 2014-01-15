@@ -1,5 +1,7 @@
 package ca.teamdave.letterman.auto.commands;
 
+import ca.teamdave.letterman.robotcomponents.Robot;
+
 /**
  * Interface for all auto commands
  */

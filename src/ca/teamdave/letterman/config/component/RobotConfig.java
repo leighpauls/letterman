@@ -1,9 +1,7 @@
-package ca.teamdave.letterman.config;
+package ca.teamdave.letterman.config.component;
 
 import ca.teamdave.letterman.RobotPose;
 import ca.teamdave.letterman.RobotPosition;
-import ca.teamdave.letterman.config.component.DriveBaseConfig;
-import ca.teamdave.letterman.config.component.WheelSetConfig;
 
 /**
  * Describes the hardware configuration of the robot (sensor pins, pwm channels, scaling factors, etc)

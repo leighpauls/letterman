@@ -10,7 +10,8 @@ package ca.teamdave.letterman;
 
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
-import ca.teamdave.letterman.config.RobotConfig;
+import ca.teamdave.letterman.config.component.RobotConfig;
+import ca.teamdave.letterman.robotcomponents.Robot;
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj.*;
  * directory.
  */
 public class LettermanMain extends IterativeRobot {
-    private DriveBase mDrive;
+    private Robot mRobot;
     private Joystick mController;
 
     /**
@@ -29,32 +30,31 @@ public class LettermanMain extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        RobotConfig config = RobotConfig.CONFIG;
-
-        mDrive = new DriveBase(config.driveConfig);
+        mRobot = new Robot(RobotConfig.CONFIG);
         mController = new Joystick(1);
     }
 
     /** Called once at the start of auto */
     public void autonomousInit() {
-        mDrive.reset(new RobotPose(new RobotPosition(0, 0), 0));
+        mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates();
-        mDrive.setArcade(0, 0);
+        mRobot.getDriveBase().setArcade(0, 0);
     }
 
 
     /** Called once at the start of teleop */
     public void teleopInit() {
-        mDrive.reset(new RobotPose(new RobotPosition(0, 0), 0));
+        mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates();
-        mDrive.setArcade(-mController.getY(), mController.getX());
+        mRobot.getDriveBase().setArcade(-mController.getY(), mController.getX());
     }
+
 
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
