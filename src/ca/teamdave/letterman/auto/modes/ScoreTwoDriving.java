@@ -1,6 +1,7 @@
 package ca.teamdave.letterman.auto.modes;
 
 import ca.teamdave.letterman.auto.commands.drive.DriveToPoint;
+import ca.teamdave.letterman.auto.commands.drive.StopDrive;
 import ca.teamdave.letterman.auto.commands.drive.TurnToHeading;
 import ca.teamdave.letterman.auto.commands.drive.WaitForDriveStopped;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
@@ -15,16 +16,19 @@ import ca.teamdave.letterman.config.command.DriveToPointConfig;
 import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
+import org.json.me.JSONObject;
 
 /**
  * Auto mode that does the driving pattern for scoring two balls
- */
+ */                           `
 public class ScoreTwoDriving implements AutoMode {
 
     private final DriveBase mDriveBase;
+    private final JSONObject mConfg;
 
-    public ScoreTwoDriving(DriveBase driveBase) {
+    public ScoreTwoDriving(DriveBase driveBase, JSONObject confg) {
         mDriveBase = driveBase;
+        mConfg = confg;
     }
 
     public RobotPose getInitialPose() {
@@ -62,6 +66,7 @@ public class ScoreTwoDriving implements AutoMode {
                                 mDriveBase),
                         new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
                 }),
+                new StopDrive(mDriveBase),
                 new DummyShoot(),
 
                 // TODO: run pickup here
@@ -76,6 +81,7 @@ public class ScoreTwoDriving implements AutoMode {
                                 mDriveBase),
                         new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
                 }),
+                new StopDrive(mDriveBase),
                 new DummyShoot()
         });
     }
