@@ -22,10 +22,10 @@ public class DriveBase implements BackgroundUpdatingComponent {
     private double mGyroRate;
 
     public DriveBase(DriveBaseConfig config) {
-        mLeft = new WheelSet(config.left);
-        mRight = new WheelSet(config.right);
+        mLeft = new WheelSet(config.leftWheelSet);
+        mRight = new WheelSet(config.rightWheelSet);
         mGyro = new Gyro(config.gyroChannel);
-        mGyro.setSensitivity(config.gyroVoltsSecondsPerDegree);
+        mGyro.setSensitivity(config.gyroVoltSecondsPerDegree);
 
         mPose = config.initialPose;
         mGyroOffset = mPose.getHeading();

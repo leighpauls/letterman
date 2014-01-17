@@ -1,5 +1,8 @@
 package ca.teamdave.letterman;
 
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
+
 /**
  * Utilities for common math
  */
@@ -30,5 +33,9 @@ public class DaveUtils {
             return -1.0;
         }
         return 0.0;
+    }
+
+    public static double jsonDouble(JSONObject obj, String key) throws JSONException {
+        return Double.parseDouble(obj.getString(key));
     }
 }

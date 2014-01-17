@@ -1,6 +1,9 @@
 package ca.teamdave.letterman.descriptors;
 
+import ca.teamdave.letterman.DaveUtils;
 import com.sun.squawk.util.MathUtils;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 /**
  * Position of a robot, without orientation information
@@ -12,6 +15,11 @@ public class RobotPosition {
     public RobotPosition(double x, double y) {
         mX = x;
         mY = y;
+    }
+
+    public RobotPosition(JSONObject json) throws JSONException {
+        mX = DaveUtils.jsonDouble(json, "x");
+        mY = DaveUtils.jsonDouble(json, "y");
     }
 
     public double getX() {

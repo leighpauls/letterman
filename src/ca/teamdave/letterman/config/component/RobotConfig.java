@@ -2,6 +2,8 @@ package ca.teamdave.letterman.config.component;
 
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 /**
  * Describes the hardware configuration of the robot (sensor pins, pwm channels, scaling factors, etc)
@@ -11,6 +13,10 @@ public class RobotConfig {
 
     public RobotConfig(DriveBaseConfig driveConfig) {
         this.driveConfig = driveConfig;
+    }
+
+    public RobotConfig(JSONObject json) throws JSONException {
+        driveConfig = new DriveBaseConfig(json.getJSONObject("driveBaseConfig"));
     }
 
     // TODO: drive this from a json file

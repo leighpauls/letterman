@@ -1,0 +1,36 @@
+{
+  "robotConfig": {
+    "driveBaseConfig": {
+      "gyroChannel": 1,
+      "gyroVoltSecondsPerDegree": 0.007,
+
+      "leftWheelSet": {
+        "victorChannels": [1, 2],
+        "outputInverted": false,
+        "encoderA": 1,
+        "encoderB": 2,
+        "inputInverted": false,
+        "ticksPerFoot": 318.0
+      },
+
+      "rightWheelSet": {
+        "victorChannels": [3, 4],
+        "outputInverted": true,
+        "encoderA": 3,
+        "encoderB": 4,
+        "inputInverted": false,
+        "ticksPerFoot": 318.0
+      },
+
+      "initialPose": {
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "heading": 0
+      }
+    }
+  },
+
+
+}
