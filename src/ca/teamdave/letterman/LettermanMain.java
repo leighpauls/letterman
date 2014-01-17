@@ -11,8 +11,10 @@ package ca.teamdave.letterman;
 import ca.teamdave.letterman.auto.AutoModeRunner;
 import ca.teamdave.letterman.auto.modes.AutoMode;
 import ca.teamdave.letterman.auto.modes.ScoreTwoDriving;
+import ca.teamdave.letterman.auto.modes.TestMode;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
-import ca.teamdave.letterman.robotcomponents.DriveBase;
+import ca.teamdave.letterman.descriptors.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.robotcomponents.Robot;
 import edu.wpi.first.wpilibj.*;
@@ -26,7 +28,7 @@ import edu.wpi.first.wpilibj.*;
  */
 public class LettermanMain extends IterativeRobot {
     private Robot mRobot;
-    private Joystick mController;
+    private XboxGamePad mController;
     private AutoModeRunner mAutoModeRunner;
 
     /**
@@ -35,14 +37,16 @@ public class LettermanMain extends IterativeRobot {
      */
     public void robotInit() {
         mRobot = new Robot(RobotConfig.CONFIG);
-        mController = new Joystick(1);
+        mController = new XboxGamePad(1);
     }
 
 
     /** Called once at the start of auto */
     public void autonomousInit() {
+        System.out.println("Auto Init running");
         // TODO: pick this mode from a list
         AutoMode mode = new ScoreTwoDriving(mRobot.getDriveBase());
+        // AutoMode mode = new TestMode(mRobot.getDriveBase());
         mRobot.getDriveBase().reset(mode.getInitialPose());
         mAutoModeRunner = new AutoModeRunner(mode);
     }
@@ -61,10 +65,13 @@ public class LettermanMain extends IterativeRobot {
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates();
-        mRobot.getDriveBase().setArcade(-mController.getY(), mController.getX());
+        mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
     }
 
 
+    public void disabledInit() {
+        mAutoModeRunner = null;
+    }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates();

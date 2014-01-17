@@ -1,6 +1,7 @@
-package ca.teamdave.letterman.auto.commands;
+package ca.teamdave.letterman.auto.commands.drive;
 
 import ca.teamdave.letterman.PidController;
+import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
 
@@ -29,8 +30,10 @@ public class TurnToHeading implements AutoCommand {
         double turnPower = mTurnPid.update(deltaTime, mDestHeading, curHeading);
         mDriveBase.setArcade(0, turnPower);
 
-        return Math.abs(mDestHeading - curHeading) <= mCompletionErrorAngle
-                ? Completion.FINISHED
-                : Completion.RUNNING;
+        if (Math.abs(mDestHeading - curHeading) <= mCompletionErrorAngle) {
+            System.out.println("Finished with:" + curHeading + " going to: " + mDestHeading);
+            return Completion.FINISHED;
+        }
+        return Completion.RUNNING;
     }
 }

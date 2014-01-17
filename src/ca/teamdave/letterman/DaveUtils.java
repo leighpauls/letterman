@@ -1,9 +1,9 @@
 package ca.teamdave.letterman;
 
 /**
- * Utilities for common math needed for driving control
+ * Utilities for common math
  */
-public class DriveUtils {
+public class DaveUtils {
 
     /**
      * @param angle An angle in degrees
@@ -17,5 +17,18 @@ public class DriveUtils {
             return angle + 360.0;
         }
         return angle;
+    }
+
+    /**
+     * @param a
+     * @return The sign of a, as +1, -1, or 0
+     */
+    public static double sign(double a) {
+        if (a > 0.0) {
+            return 1.0;
+        } else if (a < 0.0) {
+            return -1.0;
+        }
+        return 0.0;
     }
 }

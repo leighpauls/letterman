@@ -1,4 +1,4 @@
-package ca.teamdave.letterman;
+package ca.teamdave.letterman.descriptors;
 
 /**
  * Container class for a robot's position and orientation

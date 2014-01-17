@@ -1,7 +1,7 @@
 package ca.teamdave.letterman.config.component;
 
-import ca.teamdave.letterman.RobotPose;
-import ca.teamdave.letterman.RobotPosition;
+import ca.teamdave.letterman.descriptors.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 
 /**
  * Describes the hardware configuration of the robot (sensor pins, pwm channels, scaling factors, etc)

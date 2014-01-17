@@ -1,9 +1,9 @@
 package ca.teamdave.letterman.robotcomponents;
 
-import ca.teamdave.letterman.RobotPosition;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
-import ca.teamdave.letterman.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.config.component.DriveBaseConfig;
 import edu.wpi.first.wpilibj.Gyro;
 
@@ -45,10 +45,10 @@ public class DriveBase implements BackgroundUpdatingComponent {
                         mPose.getPosition().getY() + deltaY),
                 headingDegrees);
 
-        System.out.println(
+       /*  System.out.println(
                 mPose.getPosition().getX() + ", "
                         + mPose.getPosition().getY() + ", "
-                        + mPose.getHeading());
+                        + mPose.getHeading()); */
     }
 
     public void setArcade(double forward, double sideways) {
@@ -61,8 +61,15 @@ public class DriveBase implements BackgroundUpdatingComponent {
     }
 
     public void reset(RobotPose initialPose) {
-        mGyro.reset();
         mPose = initialPose;
-        mGyroOffset = initialPose.getHeading();
+        mGyroOffset = initialPose.getHeading() - mGyro.getAngle();
+    }
+
+    public double getForwardVelocity() {
+        return (mLeft.getVelocity() + mRight.getVelocity()) / 2;
+    }
+
+    public double getTurnVelocity() {
+        return mGyro.getRate();
     }
 }

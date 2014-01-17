@@ -1,7 +1,12 @@
 package ca.teamdave.letterman.auto.modes;
 
-import ca.teamdave.letterman.RobotPose;
-import ca.teamdave.letterman.RobotPosition;
+import ca.teamdave.letterman.auto.commands.drive.DriveToPoint;
+import ca.teamdave.letterman.auto.commands.drive.TurnToHeading;
+import ca.teamdave.letterman.auto.commands.drive.WaitForDriveStopped;
+import ca.teamdave.letterman.auto.commands.meta.Latch;
+import ca.teamdave.letterman.config.command.WaitForDriveStoppedConfig;
+import ca.teamdave.letterman.descriptors.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.auto.commands.*;
 import ca.teamdave.letterman.auto.commands.dummy.DummyShoot;
 import ca.teamdave.letterman.auto.commands.meta.Pause;
@@ -28,12 +33,12 @@ public class ScoreTwoDriving implements AutoMode {
 
     public AutoCommand getRootCommand() {
 
-        PidControllerConfig turnPidConfig = new PidControllerConfig(0.01, 0, 0);
+        PidControllerConfig turnPidConfig = new PidControllerConfig(0.01, 0.01, 0);
         PidControllerConfig drivePidConfig = new PidControllerConfig(0.1, 0, 0);
 
 
         RobotPosition shootPosition = new RobotPosition(8, 0);
-        RobotPosition pickupPosition = new RobotPosition(0, 0);
+        RobotPosition pickupPosition = new RobotPosition(-1, 0);
 
         DriveToPointConfig driveOut = new DriveToPointConfig(
                 shootPosition,
@@ -51,7 +56,12 @@ public class ScoreTwoDriving implements AutoMode {
         return new Series(new AutoCommand[] {
                 // TODO: drive this construction nicely from somewhere
                 new DriveToPoint(driveOut, mDriveBase),
-                new TurnToHeading(new TurnToHeadingConfig(20, 2, turnPidConfig), mDriveBase),
+                new Latch(new AutoCommand[]{
+                        new TurnToHeading(
+                                new TurnToHeadingConfig(20, 2, turnPidConfig),
+                                mDriveBase),
+                        new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
+                }),
                 new DummyShoot(),
 
                 new TurnToHeading(new TurnToHeadingConfig(0, 2, turnPidConfig), mDriveBase),
@@ -61,7 +71,12 @@ public class ScoreTwoDriving implements AutoMode {
                 // TODO: stop running pickup here
 
                 new DriveToPoint(driveOut, mDriveBase),
-                new TurnToHeading(new TurnToHeadingConfig(-20, 2, turnPidConfig), mDriveBase),
+                new Latch(new AutoCommand[]{
+                        new TurnToHeading(
+                                new TurnToHeadingConfig(-20, 2, turnPidConfig),
+                                mDriveBase),
+                        new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
+                }),
                 new DummyShoot()
         });
     }

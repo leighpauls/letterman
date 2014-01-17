@@ -1,6 +1,6 @@
 package ca.teamdave.letterman.config.component;
 
-import ca.teamdave.letterman.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPose;
 
 /**
  * Config for a drive base
@@ -11,6 +11,7 @@ public class DriveBaseConfig {
     public final WheelSetConfig left;
     public final WheelSetConfig right;
     public final RobotPose initialPose;
+
 
     public DriveBaseConfig(
             int gyroChannel,

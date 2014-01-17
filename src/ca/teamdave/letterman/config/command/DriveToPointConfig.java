@@ -1,10 +1,10 @@
 package ca.teamdave.letterman.config.command;
 
-import ca.teamdave.letterman.RobotPosition;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 
 /**
- * Configuration for a {@link ca.teamdave.letterman.auto.commands.DriveToPoint} object
+ * Configuration for a {@link ca.teamdave.letterman.auto.commands.drive.DriveToPoint} object
  */
 public class DriveToPointConfig {
     public final RobotPosition endPosition;

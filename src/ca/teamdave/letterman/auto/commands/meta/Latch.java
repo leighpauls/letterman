@@ -4,17 +4,13 @@ import ca.teamdave.letterman.auto.commands.AutoCommand;
 
 /**
  * Executes child commands in parallel. Each child command will be executed on every cycle until
- * all child commands have returned FINISHED at least once.
+ * all child commands return FINISHED on the same cycle
  */
 public class Latch implements AutoCommand {
     private final AutoCommand[] mCommands;
-    private final boolean[] mCompletedCommands;
-    private int mRemainingCommands;
 
     public Latch(AutoCommand[] commands) {
         mCommands = commands;
-        mCompletedCommands = new boolean[mCommands.length];
-        mRemainingCommands = mCommands.length;
     }
 
     public void firstStep() {
@@ -24,13 +20,16 @@ public class Latch implements AutoCommand {
     }
 
     public Completion runStep(double deltaTime) {
+        int numFinished = 0;
         for (int i = 0; i < mCommands.length; ++i) {
-            // has the command completed for the first time?
-            if (mCommands[i].runStep(deltaTime) == Completion.FINISHED && !mCompletedCommands[i]) {
-                mCompletedCommands[i] = true;
-                mRemainingCommands--;
+            if (mCommands[i].runStep(deltaTime) == Completion.FINISHED) {
+                numFinished++;
             }
         }
-        return mRemainingCommands == 0 ? Completion.FINISHED : Completion.RUNNING;
+
+        if (numFinished == mCommands.length) {
+            return Completion.FINISHED;
+        }
+        return Completion.RUNNING;
     }
 }

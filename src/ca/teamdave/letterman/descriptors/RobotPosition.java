@@ -1,4 +1,4 @@
-package ca.teamdave.letterman;
+package ca.teamdave.letterman.descriptors;
 
 import com.sun.squawk.util.MathUtils;
 

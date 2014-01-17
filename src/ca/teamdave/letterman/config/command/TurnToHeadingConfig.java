@@ -3,7 +3,7 @@ package ca.teamdave.letterman.config.command;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 
 /**
- * Configuration for {@link ca.teamdave.letterman.auto.commands.TurnToHeading}
+ * Configuration for {@link ca.teamdave.letterman.auto.commands.drive.TurnToHeading}
  */
 public class TurnToHeadingConfig {
     public final double heading;
