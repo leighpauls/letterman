@@ -18,6 +18,8 @@ public class DriveBase implements BackgroundUpdatingComponent {
 
     private RobotPose mPose;
     private double mGyroOffset;
+    private double mPrevGyroAngle;
+    private double mGyroRate;
 
     public DriveBase(DriveBaseConfig config) {
         mLeft = new WheelSet(config.left);
@@ -27,6 +29,8 @@ public class DriveBase implements BackgroundUpdatingComponent {
 
         mPose = config.initialPose;
         mGyroOffset = mPose.getHeading();
+        mPrevGyroAngle = mPose.getHeading();
+        mGyroRate = 0;
 
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
@@ -39,16 +43,14 @@ public class DriveBase implements BackgroundUpdatingComponent {
         double deltaX = velocity * deltaTime * Math.cos(headingRadians);
         double deltaY = velocity * deltaTime * Math.sin(headingRadians);
 
+        mGyroRate = (headingDegrees - mPrevGyroAngle) / deltaTime;
+        mPrevGyroAngle = headingDegrees;
+
         mPose = new RobotPose(
                 new RobotPosition(
                         mPose.getPosition().getX() + deltaX,
                         mPose.getPosition().getY() + deltaY),
                 headingDegrees);
-
-       /*  System.out.println(
-                mPose.getPosition().getX() + ", "
-                        + mPose.getPosition().getY() + ", "
-                        + mPose.getHeading()); */
     }
 
     public void setArcade(double forward, double sideways) {
@@ -63,6 +65,7 @@ public class DriveBase implements BackgroundUpdatingComponent {
     public void reset(RobotPose initialPose) {
         mPose = initialPose;
         mGyroOffset = initialPose.getHeading() - mGyro.getAngle();
+        mPrevGyroAngle = mPose.getHeading();
     }
 
     public double getForwardVelocity() {
@@ -70,6 +73,6 @@ public class DriveBase implements BackgroundUpdatingComponent {
     }
 
     public double getTurnVelocity() {
-        return mGyro.getRate();
+        return mGyroRate;
     }
 }

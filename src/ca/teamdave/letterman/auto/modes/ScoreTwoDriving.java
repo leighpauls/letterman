@@ -64,7 +64,6 @@ public class ScoreTwoDriving implements AutoMode {
                 }),
                 new DummyShoot(),
 
-                new TurnToHeading(new TurnToHeadingConfig(0, 2, turnPidConfig), mDriveBase),
                 // TODO: run pickup here
                 new DriveToPoint(driveBackToBall, mDriveBase),
                 new Pause(0.5),
