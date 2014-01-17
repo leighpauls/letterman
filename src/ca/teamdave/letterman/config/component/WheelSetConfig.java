@@ -40,7 +40,7 @@ public class WheelSetConfig {
         }
         outputInverted = json.getBoolean("outputInverted");
         encoderA = json.getInt("encoderA");
-        encoderB = json.getInt("encoderA");
+        encoderB = json.getInt("encoderB");
         inputInverted = json.getBoolean("inputInverted");
         ticksPerFoot = DaveUtils.jsonDouble(json, "ticksPerFoot");
     }

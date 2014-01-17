@@ -33,13 +33,20 @@ public class LettermanMain extends IterativeRobot {
     private Robot mRobot;
     private XboxGamePad mController;
     private AutoModeRunner mAutoModeRunner;
+    private AutoMode[] mAutoModeOptions;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-        mRobot = new Robot(RobotConfig.CONFIG);
+        ConfigLoader.getInstance().loadConfigFromFile();
+        try {
+            mRobot = new Robot(new RobotConfig(ConfigLoader.getInstance().getConfigObject("robotConfig")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse robot config");
+        }
         mController = new XboxGamePad(1);
     }
 
@@ -74,7 +81,15 @@ public class LettermanMain extends IterativeRobot {
 
     public void disabledInit() {
         mAutoModeRunner = null;
-        ConfigLoader.openFile();
+        ConfigLoader.getInstance().loadConfigFromFile();
+        // TODO: can I create a new robot here without WPILibJ going TU?
+        try {
+            // reload auto mode configs
+            JSONObject autoModes = ConfigLoader.getInstance().getConfigObject("autoModes");
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Filed to parse auto mode config");
+        }
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {

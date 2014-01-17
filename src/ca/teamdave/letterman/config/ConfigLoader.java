@@ -14,7 +14,17 @@ import java.util.Vector;
  * Loads configuration files from disk
  */
 public class ConfigLoader {
-    public static void openFile() {
+    private static ConfigLoader sInstance = null;
+    public static ConfigLoader getInstance() {
+        if (sInstance == null) {
+            sInstance = new ConfigLoader();
+        }
+        return sInstance;
+    }
+
+    private JSONObject mRootObject;
+
+    public void loadConfigFromFile() {
         InputStream is = null;
         try {
             is = Connector.openDataInputStream("file:///letterman_config.json");
@@ -28,8 +38,8 @@ public class ConfigLoader {
             }
             System.out.println(fileContents);
             try {
-                JSONObject jsonObject = new JSONObject(fileContents);
-                System.out.println(jsonObject.toString(1));
+                mRootObject = new JSONObject(fileContents);
+                System.out.println(mRootObject.toString(1));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -46,5 +56,9 @@ public class ConfigLoader {
             }
         }
 
+    }
+
+    public JSONObject getConfigObject(String topLevelKey) throws JSONException {
+        return mRootObject.getJSONObject(topLevelKey);
     }
 }
