@@ -13,6 +13,7 @@ import ca.teamdave.letterman.auto.modes.AutoMode;
 import ca.teamdave.letterman.auto.modes.ScoreTwoDriving;
 import ca.teamdave.letterman.auto.modes.TestMode;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
+import ca.teamdave.letterman.config.ConfigLoader;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.config.component.RobotConfig;
@@ -71,6 +72,7 @@ public class LettermanMain extends IterativeRobot {
 
     public void disabledInit() {
         mAutoModeRunner = null;
+        ConfigLoader.openFile();
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
