@@ -85,7 +85,7 @@ public class LettermanMain extends IterativeRobot {
         // TODO: can I create a new robot here without WPILibJ going TU?
         try {
             // reload auto mode configs
-            JSONObject autoModes = ConfigLoader.getInstance().getConfigObject("autoModes");
+            JSONObject autoConfig = ConfigLoader.getInstance().getConfigObject("auto");
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException("Filed to parse auto mode config");
