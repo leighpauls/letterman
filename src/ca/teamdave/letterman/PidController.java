@@ -40,4 +40,8 @@ public class PidController {
 
         return output;
     }
+
+    public String toString() {
+        return "PID Controller: " + mP +", "+mI+", "+mD;
+    }
 }
