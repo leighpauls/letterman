@@ -43,21 +43,27 @@
       "d": 0
     },
     "shootPosition": {
-        "x": 8,
-        "y": 0
+      "x": 8,
+      "y": 0
     },
     "pickupPosition": {
-        "x": -1,
-        "y": 0
+      "x": -1,
+      "y": 0
     },
-    "turnLockDistanceOut": 1,
-    "completeDistanceOut": 0.5,
-    "turnLockDistanceBack": 1,
-    "completeDistanceBack": 0.25,
-    "heading": 20,
-    "completionErrorAngle": 2,
-    "pause": 0.5,
-    "forwardStopSpeed": 0.1,
-    "turnstopSpeed": 5
+    "driveOut": {
+      "turnLockDistance": 1,
+      "completeDistance": 0.5
+    },
+    "driveBack": {
+      "turnLockDistance": 1,
+      "completeDistance": 0.25
+    },
+    "aimingTurn": {
+      "heading": 20,
+      "completionErrorAngle": 2,
+      "forwardStopSpeed": 0.1,
+      "turnStopSpeed": 5
+    },
+    "pickupPause": 0.5,
   }
 }
