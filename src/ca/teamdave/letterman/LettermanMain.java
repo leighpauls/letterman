@@ -54,9 +54,20 @@ public class LettermanMain extends IterativeRobot {
     /** Called once at the start of auto */
     public void autonomousInit() {
         System.out.println("Auto Init running");
-        // TODO: pick this mode from a list
-        AutoMode mode = new ScoreTwoDriving(mRobot.getDriveBase());
-        // AutoMode mode = new TestMode(mRobot.getDriveBase());
+        ConfigLoader.getInstance().loadConfigFromFile();
+        AutoMode mode;
+        try{
+            mode = new ScoreTwoDriving(
+                    mRobot.getDriveBase(),
+                    ConfigLoader.getInstance().getConfigObject("auto"));
+        
+        }
+        catch(JSONException e){
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse a robot config");
+        }
+            // TODO: pick this mode from a list
+            // AutoMode mode = new TestMode(mRobot.getDriveBase());
         mRobot.getDriveBase().reset(mode.getInitialPose());
         mAutoModeRunner = new AutoModeRunner(mode);
     }

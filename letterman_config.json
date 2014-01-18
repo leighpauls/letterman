@@ -41,6 +41,23 @@
       "p": 0.01,
       "i": 0,
       "d": 0
-    }
+    },
+    "shootPosition": {
+        "x": 8,
+        "y": 0
+    },
+    "pickupPosition": {
+        "x": -1,
+        "y": 0
+    },
+    "driveOutA": 1,
+    "driveOutB": 0.5,
+    "driveBackToBallA": 1,
+    "driveBackToBallB": 0.25,
+    "turnToHeadingA": 20,
+    "turnToHeadingB": 2,
+    "pause": 0.5,
+    "waitForStopA": 0.1,
+    "waitForStopB": 5
   }
 }
