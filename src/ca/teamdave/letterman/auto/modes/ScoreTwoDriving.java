@@ -42,29 +42,29 @@ public class ScoreTwoDriving implements AutoMode {
             PidControllerConfig turnPidConfig = new PidControllerConfig(mConfig.getJSONObject("turnPid"));
             PidControllerConfig drivePidConfig = new PidControllerConfig(mConfig.getJSONObject("drivePid"));
             
-            double driveOutA = DaveUtils.jsonDouble(mConfig, "driveOutA");
-            double driveOutB = DaveUtils.jsonDouble(mConfig, "driveOutB");
-            double driveBackToBallA = DaveUtils.jsonDouble(mConfig, "driveBackToBallA");
-            double driveBackToBallB = DaveUtils.jsonDouble(mConfig, "driveBackToBallB");
-            double turnToHeadingA = DaveUtils.jsonDouble(mConfig, "turnToHeadingA");
-            double turnToHeadingB = DaveUtils.jsonDouble(mConfig, "turnToHeadingB");
+            double turnLockDistanceOut = DaveUtils.jsonDouble(mConfig, "turnLockDistance");
+            double completeDistanceOut = DaveUtils.jsonDouble(mConfig, "completeDistance");
+            double turnLockDistanceBack = DaveUtils.jsonDouble(mConfig, "turnLockDistanceBack");
+            double completeDistanceBack = DaveUtils.jsonDouble(mConfig, "completeDistanceBack");
+            double heading = DaveUtils.jsonDouble(mConfig, "heading");
+            double completionErrorAngle = DaveUtils.jsonDouble(mConfig, "completionErrorAngle");
             double pause = DaveUtils.jsonDouble(mConfig, "pause");
-            double waitForStopA = DaveUtils.jsonDouble(mConfig, "waitForStopA");
-            double waitForStopB = DaveUtils.jsonDouble(mConfig, "waitForStopB");
+            double forwardStopSpeed = DaveUtils.jsonDouble(mConfig, "forwardStopSpeed");
+            double turnStopSpeed = DaveUtils.jsonDouble(mConfig, "turnStopSpeed");
             
             RobotPosition shootPosition = new RobotPosition(mConfig.getJSONObject("shootPosition"));
             RobotPosition pickupPosition = new RobotPosition (mConfig.getJSONObject("pickupPosition"));
             
             DriveToPointConfig driveOut = new DriveToPointConfig(
                     shootPosition,
-                    driveOutA,
-                    driveOutB,
+                    turnLockDistanceOut,
+                    completeDistanceOut,
                     turnPidConfig,
                     drivePidConfig);
             DriveToPointConfig driveBackToBall = new DriveToPointConfig(
                     pickupPosition,
-                    driveBackToBallA,
-                    driveBackToBallB,
+                    turnLockDistanceBack,
+                    completeDistanceBack,
                     turnPidConfig,
                     drivePidConfig);
             
@@ -73,7 +73,7 @@ public class ScoreTwoDriving implements AutoMode {
                 new DriveToPoint(driveOut, mDriveBase),
                 new Latch(new AutoCommand[]{
                     new TurnToHeading(
-                            new TurnToHeadingConfig(turnToHeadingA, turnToHeadingB, turnPidConfig),
+                            new TurnToHeadingConfig(heading, completionErrorAngle, turnPidConfig),
                             mDriveBase),
                     new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
                 }),
@@ -88,9 +88,9 @@ public class ScoreTwoDriving implements AutoMode {
                 new DriveToPoint(driveOut, mDriveBase),
                 new Latch(new AutoCommand[]{
                     new TurnToHeading(
-                            new TurnToHeadingConfig(-turnToHeadingA, turnToHeadingB, turnPidConfig),
+                            new TurnToHeadingConfig(heading, completionErrorAngle, turnPidConfig),
                             mDriveBase),
-                    new WaitForDriveStopped(new WaitForDriveStoppedConfig(waitForStopA, waitForStopB), mDriveBase)
+                    new WaitForDriveStopped(new WaitForDriveStoppedConfig(forwardStopSpeed, turnStopSpeed), mDriveBase)
                 }),
                 new StopDrive(mDriveBase),
                 new DummyShoot()

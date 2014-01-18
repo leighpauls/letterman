@@ -50,14 +50,14 @@
         "x": -1,
         "y": 0
     },
-    "driveOutA": 1,
-    "driveOutB": 0.5,
-    "driveBackToBallA": 1,
-    "driveBackToBallB": 0.25,
-    "turnToHeadingA": 20,
-    "turnToHeadingB": 2,
+    "turnLockDistanceOut": 1,
+    "completeDistanceOut": 0.5,
+    "turnLockDistanceBack": 1,
+    "completeDistanceBack": 0.25,
+    "heading": 20,
+    "completionErrorAngle": 2,
     "pause": 0.5,
-    "waitForStopA": 0.1,
-    "waitForStopB": 5
+    "forwardStopSpeed": 0.1,
+    "turnstopSpeed": 5
   }
 }
