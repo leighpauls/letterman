@@ -38,9 +38,26 @@
       "d": 0
     },
     "drivePid": {
-      "p": 0.01,
+      "p": 0.1,
       "i": 0,
       "d": 0
-    }
+    },
+    "shootPosition": {
+        "x": 8,
+        "y": 0
+    },
+    "pickupPosition": {
+        "x": -1,
+        "y": 0
+    },
+    "turnLockDistanceOut": 1,
+    "completeDistanceOut": 0.5,
+    "turnLockDistanceBack": 1,
+    "completeDistanceBack": 0.25,
+    "heading": 20,
+    "completionErrorAngle": 2,
+    "pause": 0.5,
+    "forwardStopSpeed": 0.1,
+    "turnstopSpeed": 5
   }
 }

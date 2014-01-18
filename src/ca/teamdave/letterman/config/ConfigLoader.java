@@ -36,10 +36,9 @@ public class ConfigLoader {
                 // System.out.println((String)lines.elementAt(i));
                 fileContents += (String)lines.elementAt(i) + "\n";
             }
-            System.out.println(fileContents);
             try {
                 mRootObject = new JSONObject(fileContents);
-                System.out.println(mRootObject.toString(1));
+                // System.out.println(mRootObject.toString(1));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
