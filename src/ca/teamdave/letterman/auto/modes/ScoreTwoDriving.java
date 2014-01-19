@@ -44,20 +44,15 @@ public class ScoreTwoDriving implements AutoMode {
                     mAutoConfig.getJSONObject("speedPid"));
 
             JSONObject modeConfig = mAutoConfig.getJSONObject("scoreTwoDriving");
-            // Special field positions
-            RobotPosition shootPosition = new RobotPosition(
-                    modeConfig.getJSONObject("shootPosition"));
-            RobotPosition pickupPosition = new RobotPosition(
-                    modeConfig.getJSONObject("pickupPosition"));
 
             // Parameters for driving to the shoot positions
             JSONObject driveOutJson = modeConfig.getJSONObject("driveOut");
-            DriveToPointConfig driveOut = new DriveToPointConfig(
-                    shootPosition,
-                    driveOutJson.getDouble("turnLockDistance"),
-                    driveOutJson.getDouble("completeDistance"),
+            TrackLineConfig driveOutConfig = new TrackLineConfig(
+                    driveOutJson.getJSONObject("trackLine"),
                     dynamicTurnControl,
-                    driveControl);
+                    speedControl);
+            WaitForRegionConfig driveOutRegionConfig = new WaitForRegionConfig(
+                    driveOutJson.getJSONObject("waitForRegion"));
 
             // Parameters for aiming at the goal
             JSONObject aimingJson = modeConfig.getJSONObject("aiming");
@@ -73,27 +68,37 @@ public class ScoreTwoDriving implements AutoMode {
                     driveBackJson.getJSONObject("trackLine"),
                     dynamicTurnControl,
                     speedControl);
-            WaitForRegionConfig waitForRegionConfig = new WaitForRegionConfig(
+            WaitForRegionConfig driveBackRegionConfig = new WaitForRegionConfig(
                     driveBackJson.getJSONObject("waitForRegion"));
 
             return new Series(new AutoCommand[] {
-                    new DriveToPoint(driveOut, mDriveBase),
+                    new Latch(new AutoCommand[]{
+                            new TrackLine(driveOutConfig, mDriveBase),
+                            new WaitForRegion(driveOutRegionConfig, mDriveBase)
+                    }),
+                    new StopDrive(mDriveBase),
+
                     new Latch(new AutoCommand[]{
                             new TurnToHeading(aimingTurnConfig, mDriveBase),
                             new WaitForDriveStopped(aimingStopConfig, mDriveBase)
                     }),
+
                     new StopDrive(mDriveBase),
                     new DummyShoot(),
 
                     // TODO: run pickup here
                     new Latch(new AutoCommand[] {
                             new TrackLine(driveBackConfig, mDriveBase),
-                            new WaitForRegion(waitForRegionConfig, mDriveBase)
+                            new WaitForRegion(driveBackRegionConfig, mDriveBase)
                     }),
 
                     // TODO: stop running pickup here
+                    new Latch(new AutoCommand[]{
+                            new TrackLine(driveOutConfig, mDriveBase),
+                            new WaitForRegion(driveOutRegionConfig, mDriveBase)
+                    }),
+                    new StopDrive(mDriveBase),
 
-                    new DriveToPoint(driveOut, mDriveBase),
                     new Latch(new AutoCommand[]{
                             new TurnToHeading(aimingTurnConfig, mDriveBase),
                             new WaitForDriveStopped(aimingStopConfig, mDriveBase)
@@ -101,6 +106,10 @@ public class ScoreTwoDriving implements AutoMode {
                     new StopDrive(mDriveBase),
                     new DummyShoot()
             });
+
+
+
+
         } catch (JSONException ex) {
             ex.printStackTrace();
             throw new RuntimeException("Failed to make ScoreTwoDriving");

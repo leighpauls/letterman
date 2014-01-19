@@ -53,7 +53,6 @@ public class TrackLine implements AutoCommand {
             desiredHeadingOffset *= -1;
         }
         double res = mLineDirection + desiredHeadingOffset;
-        System.out.println("Desired heading: " + res);
         return res;
     }
 

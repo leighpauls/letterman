@@ -40,6 +40,7 @@ public class LettermanMain extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        System.out.println("LETTERMAN INITIALIZING!!!");
         ConfigLoader.getInstance().loadConfigFromFile();
         try {
             mRobot = new Robot(new RobotConfig(ConfigLoader.getInstance().getConfigObject("robotConfig")));

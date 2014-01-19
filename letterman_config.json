@@ -33,14 +33,14 @@
   },
   "auto": {
     "dynamicTurnPid": {
-      "p": 0.02,
+      "p": 0.01,
       "i": 0.0,
-      "d": 0.0
+      "d": 0.001
     },
     "staticTurnPid": {
-      "p": 0.022,
+      "p": 0.005,
       "i": 0.01,
-      "d": 0.003
+      "d": 0.001
     },
     "drivePid": {
       "p": 2,
@@ -54,26 +54,28 @@
     },
 
     "scoreTwoDriving": {
-      "shootPosition": {
-        "x": 8,
-        "y": 0
-      },
-      "pickupPosition": {
-        "x": -1,
-        "y": 0
-      },
       "driveOut": {
-        "turnLockDistance": 1,
-        "completeDistance": 0.2
+        "trackLine": {
+          "lineOrigin": {
+            "x": 0, "y": 0
+          },
+          "lineDirection": 0,
+          "degreesPerFootError": 4,
+          "forwardSpeed": 9
+        },
+        "waitForRegion": {
+          "x1": 10, "y1": -14,
+          "x2": 18, "y2": 14
+        }
       },
       "aiming": {
         "turn": {
-          "heading": 20,
-          "completionErrorAngle": 2
+          "heading": 45,
+          "completionErrorAngle": 10
         },
         "stop": {
-          "forwardStopSpeed": 0.1,
-          "turnStopSpeed": 5
+          "forwardStopSpeed": 0.2,
+          "turnStopSpeed": 10
         }
       },
       "driveBack": {
@@ -83,7 +85,7 @@
           },
           "lineDirection": 0,
           "degreesPerFootError": 9,
-          "forwardSpeed": -10
+          "forwardSpeed": -8
         },
         "waitForRegion": {
           "x1": -1.5, "y1": -14,
@@ -91,6 +93,7 @@
         }
       }
     },
+
 
     "testMode": {
       "drive": {
@@ -111,8 +114,8 @@
           "x": 0, "y": 0
         },
         "lineDirection": -45,
-        "degreesPerFootError": 9,
-        "forwardSpeed": -8
+        "degreesPerFootError": 4,
+        "forwardSpeed": -9
       }
     }
   }
