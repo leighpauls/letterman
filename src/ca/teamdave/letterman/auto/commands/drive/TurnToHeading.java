@@ -31,7 +31,6 @@ public class TurnToHeading implements AutoCommand {
         mDriveBase.setArcade(0, turnPower);
 
         if (Math.abs(mDestHeading - curHeading) <= mCompletionErrorAngle) {
-            System.out.println("Finished with:" + curHeading + " going to: " + mDestHeading);
             return Completion.FINISHED;
         }
         return Completion.RUNNING;

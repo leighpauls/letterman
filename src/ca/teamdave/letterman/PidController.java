@@ -35,7 +35,7 @@ public class PidController {
         output += mI * mIntegral;
 
         // derivative contribution
-        output -= mD * (error - mPrevError) / deltaTime;
+        output += mD * (error - mPrevError) / deltaTime;
         mPrevError = error;
 
         return output;

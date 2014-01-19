@@ -65,7 +65,7 @@ public class DriveBase implements BackgroundUpdatingComponent {
     public void reset(RobotPose initialPose) {
         mPose = initialPose;
         mGyroOffset = initialPose.getHeading() - mGyro.getAngle();
-        mPrevGyroAngle = mPose.getHeading();
+        mPrevGyroAngle = initialPose.getHeading();
     }
 
     public double getForwardVelocity() {

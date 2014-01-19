@@ -22,14 +22,12 @@ public class Series implements AutoCommand {
 
     public Completion runStep(double deltaTime) {
         if (mCommandFirstStep) {
-            System.out.println("Start Command: " + mCommands[mCurCommand]);
             mCommands[mCurCommand].firstStep();
             mCommandFirstStep = false;
         }
         if (mCommands[mCurCommand].runStep(deltaTime) == Completion.FINISHED) {
             // are there more commands after this one?
             if (mCurCommand + 1 < mCommands.length) {
-                System.out.println("Finished Command: " + mCommands[mCurCommand]);
                 mCurCommand++;
                 mCommandFirstStep = true;
             } else {

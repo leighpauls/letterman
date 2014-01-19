@@ -56,18 +56,15 @@ public class LettermanMain extends IterativeRobot {
         System.out.println("Auto Init running");
         ConfigLoader.getInstance().loadConfigFromFile();
         AutoMode mode;
-        try{
+        try {
+            // TODO: pick this mode from a list
             mode = new TestMode(
                     mRobot.getDriveBase(),
                     ConfigLoader.getInstance().getConfigObject("auto"));
-        
-        }
-        catch(JSONException e){
+        } catch(JSONException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse a robot config");
         }
-            // TODO: pick this mode from a list
-            // AutoMode mode = new TestMode(mRobot.getDriveBase());
         mRobot.getDriveBase().reset(mode.getInitialPose());
         mAutoModeRunner = new AutoModeRunner(mode);
     }
@@ -93,14 +90,6 @@ public class LettermanMain extends IterativeRobot {
     public void disabledInit() {
         mAutoModeRunner = null;
         ConfigLoader.getInstance().loadConfigFromFile();
-        // TODO: can I create a new robot here without WPILibJ going TU?
-        try {
-            // reload auto mode configs
-            JSONObject autoConfig = ConfigLoader.getInstance().getConfigObject("auto");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Filed to parse auto mode config");
-        }
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
