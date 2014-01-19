@@ -1,12 +1,14 @@
 package ca.teamdave.letterman.auto.modes;
 
+import ca.teamdave.letterman.PidController;
 import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.auto.commands.NoOp;
-import ca.teamdave.letterman.auto.commands.drive.StopDrive;
-import ca.teamdave.letterman.auto.commands.drive.TurnToHeading;
-import ca.teamdave.letterman.auto.commands.drive.WaitForDriveStopped;
+import ca.teamdave.letterman.auto.commands.drive.*;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
+import ca.teamdave.letterman.auto.commands.meta.Pause;
 import ca.teamdave.letterman.auto.commands.meta.Series;
+import ca.teamdave.letterman.config.command.DriveToDistConfig;
+import ca.teamdave.letterman.config.command.TrackLineConfig;
 import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
 import ca.teamdave.letterman.config.command.WaitForDriveStoppedConfig;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
@@ -33,29 +35,40 @@ public class TestMode implements AutoMode {
     }
 
     public AutoCommand getRootCommand() throws JSONException {
-        PidControllerConfig turnController = new PidControllerConfig(
-                mAutoConfig.getJSONObject("turnPid"));
+        PidControllerConfig dynamicTurnController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("dynamicTurnPid"));
+        PidControllerConfig staticTurnController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("staticTurnPid"));
+        PidControllerConfig driveController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("drivePid"));
 
-        /* PidControllerConfig speedController = new PidControllerConfig(
-                mAutoConfig.getJSONObject("speedPid")); */
+        PidControllerConfig speedController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("speedPid"));
 
         JSONObject modeConfig = mAutoConfig.getJSONObject("testMode");
 
-        /* TrackLineConfig trackLineConfig = new TrackLineConfig(
-                modeConfig.getJSONObject("trackLine"),
-                turnController,
-                speedController); */
-
         return new Series(new AutoCommand[]{
                 new Latch(new AutoCommand[]{
+                        new TrackLine(
+                                new TrackLineConfig(
+                                        modeConfig.getJSONObject("trackLine"),
+                                        dynamicTurnController,
+                                        speedController),
+                                mDriveBase),
+                        new Pause(10)
+                        /* new DriveToDist(
+                                new DriveToDistConfig(
+                                        modeConfig.getJSONObject("drive"),
+                                        driveController),
+                                mDriveBase),
                         new TurnToHeading(
                                 new TurnToHeadingConfig(
                                         modeConfig.getJSONObject("turn"),
-                                        turnController),
+                                        staticTurnController),
                                 mDriveBase),
                         new WaitForDriveStopped(
                                 new WaitForDriveStoppedConfig(modeConfig.getJSONObject("stop")),
-                                mDriveBase)
+                                mDriveBase) */
                 }),
                 new StopDrive(mDriveBase),
                 new NoOp()

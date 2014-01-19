@@ -1,17 +1,12 @@
 package ca.teamdave.letterman.auto.modes;
 
 import ca.teamdave.letterman.auto.commands.AutoCommand;
-import ca.teamdave.letterman.auto.commands.drive.DriveToPoint;
-import ca.teamdave.letterman.auto.commands.drive.StopDrive;
-import ca.teamdave.letterman.auto.commands.drive.TurnToHeading;
-import ca.teamdave.letterman.auto.commands.drive.WaitForDriveStopped;
+import ca.teamdave.letterman.auto.commands.drive.*;
 import ca.teamdave.letterman.auto.commands.dummy.DummyShoot;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
 import ca.teamdave.letterman.auto.commands.meta.Pause;
 import ca.teamdave.letterman.auto.commands.meta.Series;
-import ca.teamdave.letterman.config.command.DriveToPointConfig;
-import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
-import ca.teamdave.letterman.config.command.WaitForDriveStoppedConfig;
+import ca.teamdave.letterman.config.command.*;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
@@ -39,10 +34,14 @@ public class ScoreTwoDriving implements AutoMode {
     public AutoCommand getRootCommand() {
         try {
             // Common PID configurations
-            PidControllerConfig turnControl = new PidControllerConfig(
-                    mAutoConfig.getJSONObject("turnPid"));
+            PidControllerConfig dynamicTurnControl = new PidControllerConfig(
+                    mAutoConfig.getJSONObject("dynamicTurnPid"));
+            PidControllerConfig staticTurnControl = new PidControllerConfig(
+                    mAutoConfig.getJSONObject("staticTurnPid"));
             PidControllerConfig driveControl = new PidControllerConfig(
                     mAutoConfig.getJSONObject("drivePid"));
+            PidControllerConfig speedControl = new PidControllerConfig(
+                    mAutoConfig.getJSONObject("speedPid"));
 
             JSONObject modeConfig = mAutoConfig.getJSONObject("scoreTwoDriving");
             // Special field positions
@@ -57,49 +56,50 @@ public class ScoreTwoDriving implements AutoMode {
                     shootPosition,
                     driveOutJson.getDouble("turnLockDistance"),
                     driveOutJson.getDouble("completeDistance"),
-                    turnControl,
+                    dynamicTurnControl,
                     driveControl);
 
             // Parameters for aiming at the goal
             JSONObject aimingJson = modeConfig.getJSONObject("aiming");
             TurnToHeadingConfig aimingTurnConfig = new TurnToHeadingConfig(
                     aimingJson.getJSONObject("turn"),
-                    turnControl);
+                    staticTurnControl);
             WaitForDriveStoppedConfig aimingStopConfig = new WaitForDriveStoppedConfig(
                     aimingJson.getJSONObject("stop"));
 
             // Parameters for driving back to the ball for pickup
             JSONObject driveBackJson = modeConfig.getJSONObject("driveBack");
-            DriveToPointConfig driveBackToBall = new DriveToPointConfig(
-                    pickupPosition,
-                    driveBackJson.getDouble("turnLockDistance"),
-                    driveBackJson.getDouble("completeDistance"),
-                    turnControl,
-                    driveControl);
-
-            double pickupPause = modeConfig.getDouble("pickupPause");
+            TrackLineConfig driveBackConfig = new TrackLineConfig(
+                    driveBackJson.getJSONObject("trackLine"),
+                    dynamicTurnControl,
+                    speedControl);
+            WaitForRegionConfig waitForRegionConfig = new WaitForRegionConfig(
+                    driveBackJson.getJSONObject("waitForRegion"));
 
             return new Series(new AutoCommand[] {
-                new DriveToPoint(driveOut, mDriveBase),
-                new Latch(new AutoCommand[]{
-                    new TurnToHeading(aimingTurnConfig, mDriveBase),
-                    new WaitForDriveStopped(aimingStopConfig, mDriveBase)
-                }),
-                new StopDrive(mDriveBase),
-                new DummyShoot(),
+                    new DriveToPoint(driveOut, mDriveBase),
+                    new Latch(new AutoCommand[]{
+                            new TurnToHeading(aimingTurnConfig, mDriveBase),
+                            new WaitForDriveStopped(aimingStopConfig, mDriveBase)
+                    }),
+                    new StopDrive(mDriveBase),
+                    new DummyShoot(),
 
-                // TODO: run pickup here
-                new DriveToPoint(driveBackToBall, mDriveBase),
-                new Pause(pickupPause),
-                // TODO: stop running pickup here
+                    // TODO: run pickup here
+                    new Latch(new AutoCommand[] {
+                            new TrackLine(driveBackConfig, mDriveBase),
+                            new WaitForRegion(waitForRegionConfig, mDriveBase)
+                    }),
 
-                new DriveToPoint(driveOut, mDriveBase),
-                new Latch(new AutoCommand[]{
-                    new TurnToHeading(aimingTurnConfig, mDriveBase),
-                    new WaitForDriveStopped(aimingStopConfig, mDriveBase)
-                }),
-                new StopDrive(mDriveBase),
-                new DummyShoot()
+                    // TODO: stop running pickup here
+
+                    new DriveToPoint(driveOut, mDriveBase),
+                    new Latch(new AutoCommand[]{
+                            new TurnToHeading(aimingTurnConfig, mDriveBase),
+                            new WaitForDriveStopped(aimingStopConfig, mDriveBase)
+                    }),
+                    new StopDrive(mDriveBase),
+                    new DummyShoot()
             });
         } catch (JSONException ex) {
             ex.printStackTrace();

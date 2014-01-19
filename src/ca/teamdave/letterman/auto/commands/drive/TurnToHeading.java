@@ -17,7 +17,7 @@ public class TurnToHeading implements AutoCommand {
     public TurnToHeading(TurnToHeadingConfig config, DriveBase driveBase) {
         mDestHeading = config.heading;
         mCompletionErrorAngle = config.completionErrorAngle;
-        mTurnPid = new PidController(config.turnControl);
+        mTurnPid = new PidController(config.staticTurnControl);
         mDriveBase = driveBase;
     }
 

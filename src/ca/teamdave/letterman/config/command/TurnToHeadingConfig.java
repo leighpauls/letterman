@@ -10,13 +10,13 @@ import org.json.me.JSONObject;
 public class TurnToHeadingConfig {
     public final double heading;
     public final double completionErrorAngle;
-    public final PidControllerConfig turnControl;
+    public final PidControllerConfig staticTurnControl;
 
     public TurnToHeadingConfig(
             JSONObject json,
-            PidControllerConfig turnControl) throws JSONException {
+            PidControllerConfig staticTurnControl) throws JSONException {
         heading = json.getDouble("heading");
         completionErrorAngle = json.getDouble("completionErrorAngle");
-        this.turnControl = turnControl;
+        this.staticTurnControl = staticTurnControl;
     }
 }

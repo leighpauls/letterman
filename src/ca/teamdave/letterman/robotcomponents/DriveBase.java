@@ -36,6 +36,8 @@ public class DriveBase implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(double deltaTime) {
+        mLeft.update(deltaTime);
+        mRight.update(deltaTime);
         double velocity = (mLeft.getVelocity() + mRight.getVelocity()) / 2;
         double headingDegrees = mGyro.getAngle() + mGyroOffset;
         double headingRadians = headingDegrees * Math.PI / 180.0;

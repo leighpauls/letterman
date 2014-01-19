@@ -32,19 +32,24 @@
     }
   },
   "auto": {
-    "turnPid": {
+    "dynamicTurnPid": {
+      "p": 0.02,
+      "i": 0.0,
+      "d": 0.0
+    },
+    "staticTurnPid": {
       "p": 0.022,
       "i": 0.01,
       "d": 0.003
     },
     "drivePid": {
-      "p": 0.1,
+      "p": 2,
       "i": 0,
       "d": 0
     },
     "speedPid": {
-      "p": 0.5,
-      "i": 0.01,
+      "p": 0.1,
+      "i": 0.1,
       "d": 0
     },
 
@@ -59,11 +64,7 @@
       },
       "driveOut": {
         "turnLockDistance": 1,
-        "completeDistance": 0.5
-      },
-      "driveBack": {
-        "turnLockDistance": 1,
-        "completeDistance": 0.25
+        "completeDistance": 0.2
       },
       "aiming": {
         "turn": {
@@ -75,10 +76,27 @@
           "turnStopSpeed": 5
         }
       },
-      "pickupPause": 0.5
+      "driveBack": {
+        "trackLine": {
+          "lineOrigin": {
+            "x": 0, "y": 0
+          },
+          "lineDirection": 0,
+          "degreesPerFootError": 9,
+          "forwardSpeed": -10
+        },
+        "waitForRegion": {
+          "x1": -1.5, "y1": -14,
+          "x2": -9, "y2": 14
+        }
+      }
     },
 
     "testMode": {
+      "drive": {
+        "destDistance": 10,
+        "completionError": 0.1
+      },
       "turn": {
         "heading": 45,
         "completionErrorAngle": 1
@@ -90,12 +108,11 @@
 
       "trackLine": {
         "lineOrigin": {
-          "x": 0,
-          "y": 0
+          "x": 0, "y": 0
         },
-        "lineDirection": 0,
-        "degreesPerFootError": 10,
-        "forwardSpeed": 5
+        "lineDirection": -45,
+        "degreesPerFootError": 9,
+        "forwardSpeed": -8
       }
     }
   }

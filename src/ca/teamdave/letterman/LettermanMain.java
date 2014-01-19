@@ -58,7 +58,7 @@ public class LettermanMain extends IterativeRobot {
         AutoMode mode;
         try {
             // TODO: pick this mode from a list
-            mode = new TestMode(
+            mode = new ScoreTwoDriving(
                     mRobot.getDriveBase(),
                     ConfigLoader.getInstance().getConfigObject("auto"));
         } catch(JSONException e) {

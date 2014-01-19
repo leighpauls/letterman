@@ -18,6 +18,8 @@ public class WheelSet {
     private final boolean mOutputInverted;
 
     private final Encoder mEncoder;
+    private double mPrevPosition;
+    private double mVelocity;
 
     private final double DEADZONE = 0.1;
 
@@ -31,6 +33,9 @@ public class WheelSet {
         mEncoder = new Encoder(config.encoderA, config.encoderB, config.inputInverted);
         mEncoder.setDistancePerPulse(1 / config.ticksPerFoot);
         mEncoder.start();
+
+        mPrevPosition = 0;
+        mVelocity = 0;
     }
 
     public void setPower(double power) {
@@ -47,10 +52,12 @@ public class WheelSet {
     }
 
     public double getVelocity() {
-        double speed = mEncoder.getRate();
-        if (Double.isNaN(speed)) {
-            return 0.0;
-        }
-        return speed;
+        return mVelocity;
+    }
+
+    public void update(double deltaTime) {
+        double curPosition = getPosition();
+        mVelocity = (curPosition - mPrevPosition) / deltaTime;
+        mPrevPosition = curPosition;
     }
 }
