@@ -1,6 +1,7 @@
 package ca.teamdave.letterman.auto.commands.drive;
 
-import ca.teamdave.letterman.*;
+import ca.teamdave.letterman.DaveUtils;
+import ca.teamdave.letterman.PidController;
 import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.config.command.DriveToPointConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
@@ -39,7 +40,7 @@ public class DriveToPoint implements AutoCommand {
         RobotPose curPose = mDriveBase.getPose();
         RobotPosition curPosition = curPose.getPosition();
 
-        double requiredHeading = curPosition.getHeadingToPosition(mEndPosition);
+        double requiredHeading = curPosition.getBearingToPosition(mEndPosition);
         Error result = new Error();
         result.headingError = DaveUtils.normalizeAngle(requiredHeading - curPose.getHeading());
 

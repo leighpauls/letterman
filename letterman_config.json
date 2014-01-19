@@ -33,37 +33,70 @@
   },
   "auto": {
     "turnPid": {
-      "p": 0.01,
-      "i": 0.01,
-      "d": 0
+      "p": 0.022,
+      "i": 0,
+      "d": 0.1
     },
     "drivePid": {
       "p": 0.1,
       "i": 0,
       "d": 0
     },
-    "shootPosition": {
-      "x": 8,
-      "y": 0
+    "speedPid": {
+      "p": 0.5,
+      "i": 0.01,
+      "d": 0
     },
-    "pickupPosition": {
-      "x": -1,
-      "y": 0
+
+    "scoreTwoDriving": {
+      "shootPosition": {
+        "x": 8,
+        "y": 0
+      },
+      "pickupPosition": {
+        "x": -1,
+        "y": 0
+      },
+      "driveOut": {
+        "turnLockDistance": 1,
+        "completeDistance": 0.5
+      },
+      "driveBack": {
+        "turnLockDistance": 1,
+        "completeDistance": 0.25
+      },
+      "aiming": {
+        "turn": {
+          "heading": 20,
+          "completionErrorAngle": 2
+        },
+        "stop": {
+          "forwardStopSpeed": 0.1,
+          "turnStopSpeed": 5
+        }
+      },
+      "pickupPause": 0.5
     },
-    "driveOut": {
-      "turnLockDistance": 1,
-      "completeDistance": 0.5
-    },
-    "driveBack": {
-      "turnLockDistance": 1,
-      "completeDistance": 0.25
-    },
-    "aimingTurn": {
-      "heading": 20,
-      "completionErrorAngle": 2,
-      "forwardStopSpeed": 0.1,
-      "turnStopSpeed": 5
-    },
-    "pickupPause": 0.5,
+
+    "testMode": {
+      "turn": {
+        "heading": 45,
+        "completionErrorAngle": 1
+      },
+      "stop": {
+        "forwardStopSpeed": 0.1,
+        "turnStopSpeed": 5,
+      },
+
+      "trackLine": {
+        "lineOrigin": {
+          "x": 0,
+          "y": 0
+        },
+        "lineDirection": 0,
+        "degreesPerFootError": 10,
+        "forwardSpeed": 5
+      }
+    }
   }
 }

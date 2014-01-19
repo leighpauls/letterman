@@ -1,6 +1,7 @@
 package ca.teamdave.letterman.auto;
 
 import ca.teamdave.letterman.auto.commands.AutoCommand;
+import ca.teamdave.letterman.auto.commands.NoOp;
 import ca.teamdave.letterman.auto.modes.AutoMode;
 
 /**
@@ -11,7 +12,15 @@ public class AutoModeRunner {
     private boolean mFistCycle;
 
     public AutoModeRunner(AutoMode mode) {
-        mRootCommand = mode.getRootCommand();
+        AutoCommand rootCommand;
+        try {
+            rootCommand = mode.getRootCommand();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to load root command, NoOp'ing instead");
+            rootCommand = new NoOp();
+        }
+        mRootCommand = rootCommand;
         mFistCycle = true;
     }
 

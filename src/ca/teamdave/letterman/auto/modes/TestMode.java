@@ -13,31 +13,49 @@ import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 /**
  * This class is just for testing individual commands
  */
 public class TestMode implements AutoMode {
     private final DriveBase mDriveBase;
+    private final JSONObject mAutoConfig;
 
-    public TestMode(DriveBase driveBase) {
+    public TestMode(DriveBase driveBase, JSONObject config) {
         mDriveBase = driveBase;
+        mAutoConfig = config;
     }
 
     public RobotPose getInitialPose() {
         return new RobotPose(new RobotPosition(0, 0), 0);
     }
 
-    public AutoCommand getRootCommand() {
+    public AutoCommand getRootCommand() throws JSONException {
+        PidControllerConfig turnController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("turnPid"));
+
+        /* PidControllerConfig speedController = new PidControllerConfig(
+                mAutoConfig.getJSONObject("speedPid")); */
+
+        JSONObject modeConfig = mAutoConfig.getJSONObject("testMode");
+
+        /* TrackLineConfig trackLineConfig = new TrackLineConfig(
+                modeConfig.getJSONObject("trackLine"),
+                turnController,
+                speedController); */
+
         return new Series(new AutoCommand[]{
                 new Latch(new AutoCommand[]{
                         new TurnToHeading(
                                 new TurnToHeadingConfig(
-                                        45,
-                                        2,
-                                        new PidControllerConfig(0.01, 0.01, 0)),
+                                        modeConfig.getJSONObject("turn"),
+                                        turnController),
                                 mDriveBase),
-                        new WaitForDriveStopped(new WaitForDriveStoppedConfig(0.1, 5), mDriveBase)
+                        new WaitForDriveStopped(
+                                new WaitForDriveStoppedConfig(modeConfig.getJSONObject("stop")),
+                                mDriveBase)
                 }),
                 new StopDrive(mDriveBase),
                 new NoOp()

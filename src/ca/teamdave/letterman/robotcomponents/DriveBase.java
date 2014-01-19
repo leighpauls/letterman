@@ -1,10 +1,10 @@
 package ca.teamdave.letterman.robotcomponents;
 
-import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
-import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.config.component.DriveBaseConfig;
+import ca.teamdave.letterman.descriptors.RobotPose;
+import ca.teamdave.letterman.descriptors.RobotPosition;
 import edu.wpi.first.wpilibj.Gyro;
 
 /**

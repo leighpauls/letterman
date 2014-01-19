@@ -1,6 +1,5 @@
 package ca.teamdave.letterman.config.component;
 
-import ca.teamdave.letterman.DaveUtils;
 import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
@@ -42,6 +41,6 @@ public class WheelSetConfig {
         encoderA = json.getInt("encoderA");
         encoderB = json.getInt("encoderB");
         inputInverted = json.getBoolean("inputInverted");
-        ticksPerFoot = DaveUtils.jsonDouble(json, "ticksPerFoot");
+        ticksPerFoot = json.getDouble("ticksPerFoot");
     }
 }

@@ -1,6 +1,5 @@
 package ca.teamdave.letterman.config.component;
 
-import ca.teamdave.letterman.DaveUtils;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
@@ -31,7 +30,7 @@ public class DriveBaseConfig {
 
     public DriveBaseConfig(JSONObject json) throws JSONException {
         gyroChannel = json.getInt("gyroChannel");
-        gyroVoltSecondsPerDegree = DaveUtils.jsonDouble(json, "gyroVoltSecondsPerDegree");
+        gyroVoltSecondsPerDegree = json.getDouble("gyroVoltSecondsPerDegree");
         leftWheelSet = new WheelSetConfig(json.getJSONObject("leftWheelSet"));
         rightWheelSet = new WheelSetConfig(json.getJSONObject("rightWheelSet"));
         initialPose = new RobotPose(json.getJSONObject("initialPose"));

@@ -1,6 +1,5 @@
 package ca.teamdave.letterman.descriptors;
 
-import ca.teamdave.letterman.DaveUtils;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
@@ -18,7 +17,7 @@ public class RobotPose {
 
     public RobotPose(JSONObject json) throws JSONException {
         mPosition = new RobotPosition(json.getJSONObject("position"));
-        mHeading = DaveUtils.jsonDouble(json, "heading");
+        mHeading = json.getDouble("heading");
     }
 
     public RobotPosition getPosition() {

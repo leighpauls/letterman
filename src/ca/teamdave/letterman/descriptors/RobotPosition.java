@@ -1,6 +1,5 @@
 package ca.teamdave.letterman.descriptors;
 
-import ca.teamdave.letterman.DaveUtils;
 import com.sun.squawk.util.MathUtils;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
@@ -18,8 +17,8 @@ public class RobotPosition {
     }
 
     public RobotPosition(JSONObject json) throws JSONException {
-        mX = DaveUtils.jsonDouble(json, "x");
-        mY = DaveUtils.jsonDouble(json, "y");
+        mX = json.getDouble("x");
+        mY = json.getDouble("y");
     }
 
     public double getX() {
@@ -30,7 +29,7 @@ public class RobotPosition {
         return mY;
     }
 
-    public double getHeadingToPosition(RobotPosition endPosition) {
+    public double getBearingToPosition(RobotPosition endPosition) {
         double deltaX = endPosition.mX - mX;
         double deltaY = endPosition.mY - mY;
         double headingRad = MathUtils.atan2(deltaY, deltaX);

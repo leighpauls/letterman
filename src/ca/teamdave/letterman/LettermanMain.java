@@ -14,11 +14,11 @@ import ca.teamdave.letterman.auto.modes.ScoreTwoDriving;
 import ca.teamdave.letterman.auto.modes.TestMode;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.config.ConfigLoader;
+import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
-import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.robotcomponents.Robot;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
@@ -57,7 +57,7 @@ public class LettermanMain extends IterativeRobot {
         ConfigLoader.getInstance().loadConfigFromFile();
         AutoMode mode;
         try{
-            mode = new ScoreTwoDriving(
+            mode = new TestMode(
                     mRobot.getDriveBase(),
                     ConfigLoader.getInstance().getConfigObject("auto"));
         

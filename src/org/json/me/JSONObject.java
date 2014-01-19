@@ -389,40 +389,39 @@ public class JSONObject {
                 "] is not a Boolean.");
     }
 
-//#if CLDC!="1.0"
-//#     /**
-//#      * Get the double value associated with a key.
-//#      * @param key   A key string.
-//#      * @return      The numeric value.
-//#      * @throws JSONException if the key is not found or
-//#      *  if the value is not a Number object and cannot be converted to a number.
-//#      */
-//#     public double getDouble(String key) throws JSONException {
-//#         Object o = get(key);
-//#         if (o instanceof Byte) {
-//#             return (double) ((Byte)o).byteValue();
-//#         } else if (o instanceof Short) {
-//#             return (double) ((Short)o).shortValue();
-//#         } else if (o instanceof Integer) {
-//#             return (double) ((Integer)o).intValue();
-//#         } else if (o instanceof Long) {
-//#             return (double) ((Long)o).longValue();
-//#         } else if (o instanceof Float) {
-//#             return (double) ((Float)o).floatValue();
-//#         } else if (o instanceof Double) {
-//#             return ((Double)o).doubleValue();
-//#         } else if (o instanceof String) {
-//#             try {
-//#                 return Double.valueOf((String)o).doubleValue();
-//#             } catch (Exception e) {
-//#                 throw new JSONException("JSONObject[" + quote(key) +
-//#                     "] is not a number.");
-//#             }
-//#         } 
-//#         throw new JSONException("JSONObject[" + quote(key) +
-//#             "] is not a number.");
-//#     }
-//#endif
+
+     /**
+      * Get the double value associated with a key.
+      * @param key   A key string.
+      * @return      The numeric value.
+      * @throws JSONException if the key is not found or
+      *  if the value is not a Number object and cannot be converted to a number.
+      */
+     public double getDouble(String key) throws JSONException {
+         Object o = get(key);
+         if (o instanceof Byte) {
+             return (double) ((Byte)o).byteValue();
+         } else if (o instanceof Short) {
+             return (double) ((Short)o).shortValue();
+         } else if (o instanceof Integer) {
+             return (double) ((Integer)o).intValue();
+         } else if (o instanceof Long) {
+             return (double) ((Long)o).longValue();
+         } else if (o instanceof Float) {
+             return (double) ((Float)o).floatValue();
+         } else if (o instanceof Double) {
+             return ((Double)o).doubleValue();
+         } else if (o instanceof String) {
+             try {
+                 return Double.valueOf((String)o).doubleValue();
+             } catch (Exception e) {
+                 throw new JSONException("JSONObject[" + quote(key) +
+                     "] is not a number.");
+             }
+         }
+         throw new JSONException("JSONObject[" + quote(key) +
+             "] is not a number.");
+     }
 
 
     /**
