@@ -11,16 +11,16 @@ package ca.teamdave.letterman;
 import ca.teamdave.letterman.auto.AutoModeRunner;
 import ca.teamdave.letterman.auto.modes.AutoMode;
 import ca.teamdave.letterman.auto.modes.ScoreTwoDriving;
-import ca.teamdave.letterman.auto.modes.TestMode;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
+import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.ConfigLoader;
 import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.robotcomponents.Robot;
+import ca.teamdave.letterman.robotcomponents.camera.CameraTracking;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
-import org.json.me.JSONObject;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -33,7 +33,7 @@ public class LettermanMain extends IterativeRobot {
     private Robot mRobot;
     private XboxGamePad mController;
     private AutoModeRunner mAutoModeRunner;
-    private AutoMode[] mAutoModeOptions;
+    private CameraTracking mCameraTracking;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -49,6 +49,7 @@ public class LettermanMain extends IterativeRobot {
             throw new RuntimeException("Failed to parse robot config");
         }
         mController = new XboxGamePad(1);
+        mCameraTracking = new CameraTracking();
     }
 
 
@@ -71,7 +72,7 @@ public class LettermanMain extends IterativeRobot {
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
-        BackgroundUpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates(RobotMode.AUTO);
         // TODO: actually measure deltaTime, rather than assume it's right
         mAutoModeRunner.runCycle(0.02);
     }
@@ -83,7 +84,7 @@ public class LettermanMain extends IterativeRobot {
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
-        BackgroundUpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
     }
 
@@ -94,6 +95,6 @@ public class LettermanMain extends IterativeRobot {
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
-        BackgroundUpdateManager.getInstance().runUpdates();
+        BackgroundUpdateManager.getInstance().runUpdates(RobotMode.DISABLED);
     }
 }

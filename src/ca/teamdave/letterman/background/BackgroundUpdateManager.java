@@ -22,11 +22,12 @@ public class BackgroundUpdateManager {
         mComponents.addElement(updatingComponent);
     }
 
-    public void runUpdates() {
+    public void runUpdates(RobotMode curMode) {
         // TODO: actually time the cycle
         for (int i = 0; i < mComponents.size(); ++i) {
-            BackgroundUpdatingComponent component = (BackgroundUpdatingComponent) mComponents.elementAt(i);
-            component.updateComponent(DEFAULT_TIME);
+            BackgroundUpdatingComponent component =
+                    (BackgroundUpdatingComponent) mComponents.elementAt(i);
+            component.updateComponent(curMode, DEFAULT_TIME);
         }
     }
 }

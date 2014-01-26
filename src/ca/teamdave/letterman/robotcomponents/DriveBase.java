@@ -2,6 +2,7 @@ package ca.teamdave.letterman.robotcomponents;
 
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
+import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.component.DriveBaseConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
@@ -35,7 +36,7 @@ public class DriveBase implements BackgroundUpdatingComponent {
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
 
-    public void updateComponent(double deltaTime) {
+    public void updateComponent(RobotMode mode, double deltaTime) {
         mLeft.update(deltaTime);
         mRight.update(deltaTime);
         double velocity = (mLeft.getVelocity() + mRight.getVelocity()) / 2;
@@ -77,4 +78,5 @@ public class DriveBase implements BackgroundUpdatingComponent {
     public double getTurnVelocity() {
         return mGyroRate;
     }
+
 }
