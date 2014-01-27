@@ -18,7 +18,7 @@ public class CameraScoring {
     private static final double COM_DISTANCE_X = 19;
     private static final double COM_DISTANCE_Y = 14.5;
 
-    private static TargetPairResult scorePair(
+    private static PairTargetResult scorePair(
             ParticleAnalysisReport dynamicPart,
             ParticleAnalysisReport staticPart) {
         TargetSide side = dynamicPart.center_mass_x < staticPart.center_mass_x
@@ -75,7 +75,10 @@ public class CameraScoring {
                 dynamicPart.boundingRectTop + dynamicPart.boundingRectHeight,
                 staticPart.boundingRectTop + staticPart.boundingRectHeight);
 
-        return new TargetPairResult(score, left, top, right-left, bottom-top, side);
+        return new PairTargetResult(
+                score,
+                new BoundingRectangle(left, top, right-left, bottom-top),
+                side);
     }
 
     /**
@@ -83,24 +86,95 @@ public class CameraScoring {
      * @param particles
      * @return The best targetPairResult, no matter how bad
      */
-    public static TargetPairResult getTargetPair(ParticleAnalysisReport[] particles) {
+    public static PairTargetResult getTargetPair(ParticleAnalysisReport[] particles) {
         // don't flood the cpu if tonnes of crap gets through the filter
         int maxParticles = particles.length > 10 ? 10 : particles.length;
 
-        TargetPairResult bestResult = new TargetPairResult(
-                Double.POSITIVE_INFINITY, 0, 0, 0, 0, TargetSide.LEFT);
+        PairTargetResult bestResult = PairTargetResult.WORST_POSSIBLE_RESULT;
 
         for (int dynamicIndex = 0; dynamicIndex < maxParticles; ++dynamicIndex) {
             for (int staticIndex = 0; staticIndex < maxParticles; ++staticIndex) {
                 if (dynamicIndex == staticIndex) {
                     continue;
                 }
-                TargetPairResult targetPairResult = scorePair(
+                PairTargetResult pairTargetResult = scorePair(
                         particles[dynamicIndex],
                         particles[staticIndex]);
-                if (targetPairResult.score < bestResult.score) {
-                    bestResult = targetPairResult;
+                if (pairTargetResult.score < bestResult.score) {
+                    bestResult = pairTargetResult;
                 }
+            }
+        }
+
+        return bestResult;
+    }
+
+    private static StaticTargetResult scoreParticle(
+            ParticleAnalysisReport particle,
+            PairTargetResult lastPair) {
+        double score = 1;
+
+        // what was the scale of the last pair?
+        double expectedPairWidthInches = COM_DISTANCE_Y
+                + DYNAMIC_TARGET_HEIGHT / 2.0
+                + STATIC_TARGET_HEIGHT / 2.0;
+        double expectedPairHeightInches = COM_DISTANCE_X
+                + DYNAMIC_TARGET_WIDTH / 2.0
+                + STATIC_TARGET_WIDTH / 2.0;
+
+        // find the scaling factors of the original pair target
+        double widthInchesPerPixel = expectedPairWidthInches / (double) lastPair.bounds.width;
+        double heightInchesPerPixel = expectedPairHeightInches / (double) lastPair.bounds.height;
+
+        double particleWidthInches = (double) particle.boundingRectWidth * widthInchesPerPixel;
+        double particleHeightInches = (double) particle.boundingRectHeight * heightInchesPerPixel;
+
+        // find the skew with respect to the expected target
+        double widthScore = particleWidthInches > STATIC_TARGET_WIDTH
+                ? particleWidthInches / STATIC_TARGET_WIDTH
+                : STATIC_TARGET_WIDTH / particleWidthInches;
+        double heightScore = particleHeightInches > STATIC_TARGET_HEIGHT
+                ? particleHeightInches / STATIC_TARGET_HEIGHT
+                : STATIC_TARGET_HEIGHT / particleHeightInches;
+
+        score *= widthScore * heightScore;
+
+        // Find the expected position of the target on the image in pixels
+        double expectedCOMXPixels = (lastPair.side == TargetSide.LEFT)
+                ? (lastPair.bounds.x + lastPair.bounds.width
+                - (STATIC_TARGET_WIDTH / widthInchesPerPixel) / 2.0)
+                : (lastPair.bounds.x + (STATIC_TARGET_WIDTH / widthInchesPerPixel) / 2.0);
+        double expectedCOMYPixels = lastPair.bounds.y
+                + (DYNAMIC_TARGET_HEIGHT / 2 + COM_DISTANCE_Y) / heightInchesPerPixel;
+
+        // Find the expected position error in inches
+        double xErrorInches = (expectedCOMXPixels - particle.center_mass_x) * widthInchesPerPixel;
+        double yErrorInches = (expectedCOMYPixels - particle.center_mass_y) * heightInchesPerPixel;
+        double distError = Math.sqrt(xErrorInches * xErrorInches + yErrorInches * yErrorInches);
+
+        // score the position error
+        score *= MathUtils.pow(1.1, distError);
+
+        return new StaticTargetResult(
+                score,
+                new BoundingRectangle(
+                        particle.boundingRectLeft,
+                        particle.boundingRectTop,
+                        particle.boundingRectWidth,
+                        particle.boundingRectHeight));
+    }
+
+    public static StaticTargetResult getStaticPair(
+            ParticleAnalysisReport[] particles,
+            PairTargetResult lastPair) {
+        // don't flood the cpu if tonnes of crap gets through the filter
+        int maxParticles = particles.length > 10 ? 10 : particles.length;
+        StaticTargetResult bestResult = StaticTargetResult.WORST_POSSIBLE_RESULT;
+
+        for (int i = 0; i < maxParticles; ++i) {
+            StaticTargetResult result = scoreParticle(particles[i], lastPair);
+            if (result.score < bestResult.score) {
+                bestResult = result;
             }
         }
 

@@ -9,6 +9,8 @@ public class EnumerationClass {
         mName = name;
     }
     public String toString() {
-        return this.getClass().getName() + ": " + mName;
+        String longName = this.getClass().getName();
+        String shortName = longName.substring(longName.lastIndexOf('.') + 1);
+        return shortName + ": " + mName;
     }
 }
