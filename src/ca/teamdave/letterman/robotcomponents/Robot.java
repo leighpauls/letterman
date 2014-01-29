@@ -7,12 +7,18 @@ import ca.teamdave.letterman.config.component.RobotConfig;
  */
 public class Robot {
     private final DriveBase mDriveBase;
+    private final HotnessTracker mHotnessTracker;
 
     public Robot(RobotConfig config) {
         mDriveBase = new DriveBase(config.driveConfig);
+        mHotnessTracker = new HotnessTracker();
     }
 
     public DriveBase getDriveBase() {
         return mDriveBase;
+    }
+
+    public HotnessTracker getHotnessTracker() {
+        return mHotnessTracker;
     }
 }

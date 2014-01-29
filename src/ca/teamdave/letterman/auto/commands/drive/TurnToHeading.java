@@ -21,16 +21,21 @@ public class TurnToHeading implements AutoCommand {
         mDriveBase = driveBase;
     }
 
+    protected double getDestHeading() {
+        return mDestHeading;
+    }
+
     public void firstStep() {
-        mTurnPid.reset(mDestHeading, mDriveBase.getPose().getHeading());
+        mTurnPid.reset(getDestHeading(), mDriveBase.getPose().getHeading());
     }
 
     public Completion runStep(double deltaTime) {
         double curHeading = mDriveBase.getPose().getHeading();
-        double turnPower = mTurnPid.update(deltaTime, mDestHeading, curHeading);
+        double destHeading = getDestHeading();
+        double turnPower = mTurnPid.update(deltaTime, destHeading, curHeading);
         mDriveBase.setArcade(0, turnPower);
 
-        if (Math.abs(mDestHeading - curHeading) <= mCompletionErrorAngle) {
+        if (Math.abs(destHeading - curHeading) <= mCompletionErrorAngle) {
             return Completion.FINISHED;
         }
         return Completion.RUNNING;

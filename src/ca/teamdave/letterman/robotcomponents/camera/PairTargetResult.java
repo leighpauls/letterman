@@ -10,6 +10,9 @@ public class PairTargetResult {
             new BoundingRectangle(0, 0, 0, 0),
             TargetSide.LEFT);
 
+    /** The maximum allowed score of a pair target that isn't considered noise */
+    public static final double NOISE_SCORE_THRESHOLD = 100;
+
     public final double score;
     public final BoundingRectangle bounds;
     public final TargetSide side;

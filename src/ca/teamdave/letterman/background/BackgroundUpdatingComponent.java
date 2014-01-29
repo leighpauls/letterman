@@ -5,5 +5,5 @@ package ca.teamdave.letterman.background;
  */
 public interface BackgroundUpdatingComponent {
 
-    void updateComponent(RobotMode mode, double deltaTime);
+    void updateComponent(RobotMode mode, double modeTime, double deltaTime);
 }

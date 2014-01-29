@@ -12,20 +12,28 @@ public class CameraThread implements Runnable {
     private final Thread mThread;
 
     public static class TargetInfoDelegate {
-        PairTargetResult mPairTargetResult;
+        private PairTargetResult mPairTargetResult;
+        private StaticTargetResult mStaticTargetResult;
 
         private TargetInfoDelegate() {
             mPairTargetResult = PairTargetResult.WORST_POSSIBLE_RESULT;
+            mStaticTargetResult = StaticTargetResult.WORST_POSSIBLE_RESULT;
         }
 
         public synchronized PairTargetResult getLatestTargetPairInfo() {
             return mPairTargetResult;
         }
 
-        public synchronized void setLatestTargetPairInfo(PairTargetResult pairTargetResult) {
-            mPairTargetResult = pairTargetResult;
+        public synchronized StaticTargetResult getStaticTargetResult() {
+            return mStaticTargetResult;
         }
 
+        public synchronized void setLatestTargetInfo(
+                PairTargetResult pairTargetResult,
+                StaticTargetResult staticTargetResult) {
+            mPairTargetResult = pairTargetResult;
+            mStaticTargetResult = staticTargetResult;
+        }
     }
 
     public CameraThread() {
@@ -52,18 +60,17 @@ public class CameraThread implements Runnable {
                 ParticleAnalysisReport[] particles =
                         particleFilteredImage.getOrderedParticleAnalysisReports();
 
-                PairTargetResult targetPair = CameraScoring.getTargetPair(particles);
-
-
-                if (targetPair.score < 100) {
-                    lastAffirmativeResult = targetPair;
-                } else {
-                    // see if there's a single static target
-                    StaticTargetResult staticPair = CameraScoring.getStaticPair(
-                            particles, lastAffirmativeResult);
+                // look for a pair of targets
+                PairTargetResult pairResult = CameraScoring.getTargetPair(particles);
+                if (pairResult.score < PairTargetResult.NOISE_SCORE_THRESHOLD) {
+                    lastAffirmativeResult = pairResult;
                 }
 
-                mTargetInfoDelegate.setLatestTargetPairInfo(targetPair);
+                // look for a single static target
+                StaticTargetResult staticResult = CameraScoring.getStaticPair(
+                        particles, lastAffirmativeResult);
+
+                mTargetInfoDelegate.setLatestTargetInfo(pairResult, staticResult);
 
                 rawImage.free();
                 thresholdedImage.free();

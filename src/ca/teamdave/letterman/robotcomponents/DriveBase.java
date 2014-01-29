@@ -36,7 +36,7 @@ public class DriveBase implements BackgroundUpdatingComponent {
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
 
-    public void updateComponent(RobotMode mode, double deltaTime) {
+    public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
         mLeft.update(deltaTime);
         mRight.update(deltaTime);
         double velocity = (mLeft.getVelocity() + mRight.getVelocity()) / 2;
@@ -78,5 +78,4 @@ public class DriveBase implements BackgroundUpdatingComponent {
     public double getTurnVelocity() {
         return mGyroRate;
     }
-
 }

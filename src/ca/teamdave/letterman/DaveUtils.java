@@ -1,7 +1,9 @@
 package ca.teamdave.letterman;
 
+import edu.wpi.first.wpilibj.Utility;
+
 /**
- * Utilities for common math
+ * Utilities for common functions not included in this ridiculous distribution of Java
  */
 public class DaveUtils {
 
@@ -30,5 +32,12 @@ public class DaveUtils {
             return -1.0;
         }
         return 0.0;
+    }
+
+    /**
+     * @return The current time off the FPGA in seconds
+     */
+    public static double systemTimeSeconds() {
+        return (double)Utility.getFPGATime() * 1.0e-6;
     }
 }
