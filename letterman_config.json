@@ -70,8 +70,8 @@
       },
       "aiming": {
         "turn": {
-          "heading": 45,
-          "completionErrorAngle": 10
+          "heading": 20,
+          "completionErrorAngle": 5
         },
         "stop": {
           "forwardStopSpeed": 0.2,
