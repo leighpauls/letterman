@@ -112,6 +112,11 @@ public class CameraScoring {
     private static StaticTargetResult scoreParticle(
             ParticleAnalysisReport particle,
             PairTargetResult lastPair) {
+        if (lastPair == null) {
+            // need a past target pair to verify a static target
+            return StaticTargetResult.WORST_POSSIBLE_RESULT;
+        }
+
         double score = 1;
 
         // what was the scale of the last pair?

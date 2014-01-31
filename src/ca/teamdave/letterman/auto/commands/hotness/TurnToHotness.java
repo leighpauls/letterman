@@ -23,7 +23,7 @@ public class TurnToHotness extends TurnToHeading {
     }
 
     protected double getDestHeading() {
-        return (mShouldInvertDirection ? -1 : 1) * super.getDestHeading();
+        return (mShouldInvertDirection ? -1.0 : 1.0) * super.getDestHeading();
     }
 
     public void firstStep() {

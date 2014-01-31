@@ -35,11 +35,13 @@ public class BackgroundUpdateManager {
     /**
      * Run all of the background tasks
      * @param curMode The current mode of the robot
-     * @return The cycle time of the last cycle
+     * @return The period of the last cycle
      */
     public double runUpdates(RobotMode curMode) {
         double cycleTime = DaveUtils.systemTimeSeconds();
+        double cyclePeriod = cycleTime - mPrevCycleTime;
         if (mPrevMode != curMode) {
+            mPrevMode = curMode;
             mModeStartTime = cycleTime;
         }
 
@@ -49,11 +51,11 @@ public class BackgroundUpdateManager {
             component.updateComponent(
                     curMode,
                     cycleTime - mModeStartTime,
-                    cycleTime - mPrevCycleTime);
+                    cyclePeriod);
         }
 
         mPrevCycleTime = cycleTime;
 
-        return cycleTime;
+        return cyclePeriod;
     }
 }

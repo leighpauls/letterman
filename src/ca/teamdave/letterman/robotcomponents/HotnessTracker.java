@@ -33,6 +33,8 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
 
+    boolean firstSignal = true;
+
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
         // get the latest target info from the camera thread
         PairTargetResult pairResult = mTargetInfoDelegate.getLatestTargetPairInfo();
@@ -40,6 +42,10 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
 
         // interpret that info in terms of goal hotness
         if (pairResult.score < PairTargetResult.NOISE_SCORE_THRESHOLD) {
+            if (firstSignal) {
+                firstSignal = false;
+                System.out.println("Got target pair signal!");
+            }
             if (pairResult.side == TargetSide.LEFT) {
                 mVisibleGoalHotness = GoalHotnessState.LEFT_HOT;
             } else {
@@ -56,6 +62,7 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
         }
 
         if (modeTime >= 5 && mPrevModeTime < 5 && mode == RobotMode.AUTO) {
+            System.out.println("Flipping inferred hotness");
             // flip the inferred hot goal
             if (mInferredGoalHotness == GoalHotnessState.LEFT_HOT) {
                 mInferredGoalHotness = GoalHotnessState.RIGHT_HOT;
@@ -64,8 +71,6 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
             }
         }
         mPrevModeTime = modeTime;
-
-        System.out.println("Score: " + pairResult.score);
     }
 
     public GoalHotnessState getVisibleGoalHotness() {
@@ -77,6 +82,7 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
      */
     public void triggerModeHotnessDecision() {
         mInferredGoalHotness = mVisibleGoalHotness;
+        System.out.println("Triggering initial hotness to: " + mInferredGoalHotness);
     }
 
     public GoalHotnessState getInferredGoalHotness() {
