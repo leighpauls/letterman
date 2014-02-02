@@ -8,10 +8,12 @@ import ca.teamdave.letterman.config.component.RobotConfig;
 public class Robot {
     private final DriveBase mDriveBase;
     private final HotnessTracker mHotnessTracker;
+    private final Shooter mShooter;
 
     public Robot(RobotConfig config) {
         mDriveBase = new DriveBase(config.driveConfig);
         mHotnessTracker = new HotnessTracker();
+        mShooter = new Shooter(config.shooterConfig);
     }
 
     public DriveBase getDriveBase() {
@@ -21,4 +23,6 @@ public class Robot {
     public HotnessTracker getHotnessTracker() {
         return mHotnessTracker;
     }
+
+    public Shooter getShooter() { return mShooter; }
 }

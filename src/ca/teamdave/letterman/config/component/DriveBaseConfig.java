@@ -14,20 +14,6 @@ public class DriveBaseConfig {
     public final WheelSetConfig rightWheelSet;
     public final RobotPose initialPose;
 
-
-    public DriveBaseConfig(
-            int gyroChannel,
-            double gyroVoltSecondsPerDegree,
-            WheelSetConfig leftWheelSet,
-            WheelSetConfig rightWheelSet,
-            RobotPose initialPose) {
-        this.gyroChannel = gyroChannel;
-        this.gyroVoltSecondsPerDegree = gyroVoltSecondsPerDegree;
-        this.leftWheelSet = leftWheelSet;
-        this.rightWheelSet = rightWheelSet;
-        this.initialPose = initialPose;
-    }
-
     public DriveBaseConfig(JSONObject json) throws JSONException {
         gyroChannel = json.getInt("gyroChannel");
         gyroVoltSecondsPerDegree = json.getDouble("gyroVoltSecondsPerDegree");

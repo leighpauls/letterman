@@ -18,6 +18,7 @@ import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.robotcomponents.Robot;
+import ca.teamdave.letterman.robotcomponents.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
 
@@ -80,6 +81,14 @@ public class LettermanMain extends IterativeRobot {
     public void teleopPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
+
+        if (mController.getRightBumper()) {
+            if (mRobot.getShooter().tryFiring()) {
+                System.out.println("Firing!!!");
+            } else {
+                System.out.println("Unable to fire");
+            }
+        }
     }
 
 

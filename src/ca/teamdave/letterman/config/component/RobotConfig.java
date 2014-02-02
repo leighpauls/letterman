@@ -1,7 +1,5 @@
 package ca.teamdave.letterman.config.component;
 
-import ca.teamdave.letterman.descriptors.RobotPose;
-import ca.teamdave.letterman.descriptors.RobotPosition;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
@@ -10,20 +8,10 @@ import org.json.me.JSONObject;
  */
 public class RobotConfig {
     public final DriveBaseConfig driveConfig;
-
-    public RobotConfig(DriveBaseConfig driveConfig) {
-        this.driveConfig = driveConfig;
-    }
+    public final ShooterConfig shooterConfig;
 
     public RobotConfig(JSONObject json) throws JSONException {
         driveConfig = new DriveBaseConfig(json.getJSONObject("driveBaseConfig"));
+        shooterConfig = new ShooterConfig(json.getJSONObject("shooterConfig"));
     }
-
-    // TODO: drive this from a json file
-    public static final RobotConfig CONFIG = new RobotConfig(new DriveBaseConfig(
-            1,
-            0.007,
-            new WheelSetConfig(new int[] {1, 2}, false, 1, 2, false, 318.0),
-            new WheelSetConfig(new int[] {3, 4}, true, 3, 4, false, 318.0),
-            new RobotPose(new RobotPosition(0, 0), 0)));
 }

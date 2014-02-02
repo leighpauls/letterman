@@ -16,21 +16,6 @@ public class WheelSetConfig {
     public final boolean inputInverted;
     public final double ticksPerFoot;
 
-    public WheelSetConfig(
-            int[] victorChannels,
-            boolean outputInverted,
-            int encoderA,
-            int encoderB,
-            boolean inputInverted,
-            double ticksPerFoot) {
-        this.victorChannels = victorChannels;
-        this.encoderA = encoderA;
-        this.encoderB = encoderB;
-        this.inputInverted = inputInverted;
-        this.outputInverted = outputInverted;
-        this.ticksPerFoot = ticksPerFoot;
-    }
-
     public WheelSetConfig(JSONObject json) throws JSONException {
         JSONArray victors = json.getJSONArray("victorChannels");
         victorChannels = new int[victors.length()];
