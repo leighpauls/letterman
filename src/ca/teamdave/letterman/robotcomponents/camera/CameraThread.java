@@ -78,6 +78,7 @@ public class CameraThread implements Runnable {
             } catch (AxisCameraException e) {
                 // System.out.println("Axis camera not available yet");
             } catch (NIVisionException e) {
+                System.out.println("NI Vision exception...");
                 e.printStackTrace();
             }
         }

@@ -5,7 +5,7 @@
       "gyroVoltSecondsPerDegree": 0.007,
 
       "leftWheelSet": {
-        "victorChannels": [1, 2],
+        "victorChannels": [5, 6, 7],
         "outputInverted": false,
         "encoderA": 1,
         "encoderB": 2,
@@ -14,7 +14,7 @@
       },
 
       "rightWheelSet": {
-        "victorChannels": [3, 4],
+        "victorChannels": [1, 2, 3],
         "outputInverted": true,
         "encoderA": 3,
         "encoderB": 4,
