@@ -101,16 +101,13 @@ public class LettermanMain extends IterativeRobot {
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
 
         // Shooter control
+        boolean rightBumper = mController.getRightBumper();
         if (mController.getBackButton()) {
             mRobot.getShooter().latchStop();
         } else if (mController.getStartButton()) {
             mRobot.getShooter().forceFeed();
-        } else if (mController.getRightBumper()) {
-            if (mRobot.getShooter().tryFiring()) {
-                System.out.println("Firing!!!");
-            } else {
-                System.out.println("Unable to fire");
-            }
+        } else if (rightBumper && mRobot.getIntake().tryShooting()) {
+            mRobot.getShooter().tryFiring();
         } else {
             mRobot.getShooter().tryRetracting();
         }
@@ -127,6 +124,19 @@ public class LettermanMain extends IterativeRobot {
                 || mRobot.getBlocker().isManualControl()) {
             mRobot.getBlocker().setManualControl(rightStickPosition);
         }
+
+        // intake control
+        mRobot.getIntake().setRollerAdjustment(mController.getTriggerDifference());
+        if (!rightBumper) {
+            if (mController.getDPadUp()) {
+                mRobot.getIntake().latchOut();
+            } else if (mController.getDPadDown()) {
+                mRobot.getIntake().latchIn();
+            } else if (mController.getAButton() || mController.getRightStickButton()) {
+                mRobot.getIntake().pickup();
+            }
+        }
+
     }
 
 

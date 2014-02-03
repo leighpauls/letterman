@@ -74,5 +74,18 @@ public class XboxGamePad {
     public boolean getRightStickButton() {
         return mPad.getRawButton(10);
     }
-    
+
+    // TODO: find these buttons
+    public boolean getDPadUp() {
+        return mPad.getRawButton(11);
+    }
+    public boolean getDPadDown() {
+        return mPad.getRawButton(12);
+    }
+    public boolean getDPadLeft() {
+        return mPad.getRawButton(13);
+    }
+    public boolean getDPadRight() {
+        return mPad.getRawButton(14);
+    }
 }

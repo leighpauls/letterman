@@ -10,12 +10,14 @@ public class Robot {
     private final HotnessTracker mHotnessTracker;
     private final Shooter mShooter;
     private final Blocker mBlocker;
+    private final Intake mIntake;
 
     public Robot(RobotConfig config) {
         mDriveBase = new DriveBase(config.driveConfig);
         mHotnessTracker = new HotnessTracker();
         mShooter = new Shooter(config.shooterConfig);
         mBlocker = new Blocker(config.blockerConfig);
+        mIntake = new Intake(config.intakeConfig);
     }
 
     public DriveBase getDriveBase() {
@@ -30,5 +32,9 @@ public class Robot {
 
     public Blocker getBlocker() {
         return mBlocker;
+    }
+
+    public Intake getIntake() {
+        return mIntake;
     }
 }

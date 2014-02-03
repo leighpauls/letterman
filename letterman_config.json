@@ -41,7 +41,7 @@
 
     "blockerConfig": {
       "hardware": {
-        "victors": [8, 9],
+        "victors": [4],
         "potChannel": 2
       },
       "control": {
@@ -57,6 +57,14 @@
         "catchPosition": 45,
         "travelPosition": 90
       }
+    },
+
+    "intakeConfig": {
+      "victorChannel": 5,
+      "armInRelay": 1,
+      "armOutRelay": 2,
+      "retractionTime": 0.75,
+      "extensionTime": 0.5
     }
   },
 
