@@ -1,5 +1,6 @@
 package ca.teamdave.letterman.config.component;
 
+import ca.teamdave.letterman.DaveUtils;
 import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
@@ -15,12 +16,7 @@ public class ShooterConfig {
     public final double lostReadinessTime;
 
     public ShooterConfig(JSONObject json) throws JSONException {
-        JSONArray jsonVictors = json.getJSONArray("victors");
-        victors = new int[jsonVictors.length()];
-        for (int i = 0; i < victors.length; ++i) {
-            victors[i] = ((Integer)jsonVictors.get(i)).intValue();
-        }
-
+        victors = DaveUtils.toIntArray(json.getJSONArray("victors"));
         outputInverted = json.getBoolean("outputInverted");
 
         limitSwitch = json.getInt("limitSwitch");

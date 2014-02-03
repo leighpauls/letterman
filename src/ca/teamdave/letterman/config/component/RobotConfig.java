@@ -9,9 +9,11 @@ import org.json.me.JSONObject;
 public class RobotConfig {
     public final DriveBaseConfig driveConfig;
     public final ShooterConfig shooterConfig;
+    public final BlockerConfig blockerConfig;
 
     public RobotConfig(JSONObject json) throws JSONException {
         driveConfig = new DriveBaseConfig(json.getJSONObject("driveBaseConfig"));
         shooterConfig = new ShooterConfig(json.getJSONObject("shooterConfig"));
+        blockerConfig = new BlockerConfig(json.getJSONObject("blockerConfig"));
     }
 }

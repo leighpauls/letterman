@@ -9,11 +9,13 @@ public class Robot {
     private final DriveBase mDriveBase;
     private final HotnessTracker mHotnessTracker;
     private final Shooter mShooter;
+    private final Blocker mBlocker;
 
     public Robot(RobotConfig config) {
         mDriveBase = new DriveBase(config.driveConfig);
         mHotnessTracker = new HotnessTracker();
         mShooter = new Shooter(config.shooterConfig);
+        mBlocker = new Blocker(config.blockerConfig);
     }
 
     public DriveBase getDriveBase() {
@@ -25,4 +27,8 @@ public class Robot {
     }
 
     public Shooter getShooter() { return mShooter; }
+
+    public Blocker getBlocker() {
+        return mBlocker;
+    }
 }
