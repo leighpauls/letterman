@@ -69,6 +69,7 @@ public class LettermanMain extends IterativeRobot {
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
         double cycleTime = BackgroundUpdateManager.getInstance().runUpdates(RobotMode.AUTO);
+        mRobot.getShooter().latchStop();
         mAutoModeRunner.runCycle(cycleTime);
     }
 
@@ -82,12 +83,18 @@ public class LettermanMain extends IterativeRobot {
         BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
 
-        if (mController.getRightBumper()) {
+        if (mController.getBackButton()) {
+            mRobot.getShooter().latchStop();
+        } else if (mController.getStartButton()) {
+            mRobot.getShooter().forceFeed();
+        } else if (mController.getRightBumper()) {
             if (mRobot.getShooter().tryFiring()) {
                 System.out.println("Firing!!!");
             } else {
                 System.out.println("Unable to fire");
             }
+        } else {
+            mRobot.getShooter().tryRetracting();
         }
     }
 
