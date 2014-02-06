@@ -1,6 +1,9 @@
 package ca.teamdave.letterman;
 
 import edu.wpi.first.wpilibj.Utility;
+import edu.wpi.first.wpilibj.Victor;
+import org.json.me.JSONArray;
+import org.json.me.JSONException;
 
 /**
  * Utilities for common functions not included in this ridiculous distribution of Java
@@ -39,5 +42,30 @@ public class DaveUtils {
      */
     public static double systemTimeSeconds() {
         return (double)Utility.getFPGATime() * 1.0e-6;
+    }
+
+    /**
+     * @param jsonArray
+     * @return the int[] equivalent of jsonArray
+     * @throws JSONException
+     */
+    public static int[] toIntArray(JSONArray jsonArray) throws JSONException {
+        int[] res = new int[jsonArray.length()];
+        for (int i = 0; i < res.length; ++i) {
+            res[i] = ((Integer)jsonArray.get(i)).intValue();
+        }
+        return res;
+    }
+
+    /**
+     * @param channels
+     * @return An array of victors corresponding to channels
+     */
+    public static Victor[] getVictorSet(int[] channels) {
+        Victor[] res = new Victor[channels.length];
+        for (int i = 0; i < res.length; ++i) {
+            res[i] = new Victor(channels[i]);
+        }
+        return res;
     }
 }

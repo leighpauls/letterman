@@ -1,5 +1,6 @@
 package ca.teamdave.letterman.config.component;
 
+import ca.teamdave.letterman.DaveUtils;
 import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
@@ -17,11 +18,7 @@ public class WheelSetConfig {
     public final double ticksPerFoot;
 
     public WheelSetConfig(JSONObject json) throws JSONException {
-        JSONArray victors = json.getJSONArray("victorChannels");
-        victorChannels = new int[victors.length()];
-        for (int i = 0; i < victors.length(); ++i) {
-            victorChannels[i] = Integer.parseInt(victors.getString(i));
-        }
+        victorChannels = DaveUtils.toIntArray(json.getJSONArray("victorChannels"));
         outputInverted = json.getBoolean("outputInverted");
         encoderA = json.getInt("encoderA");
         encoderB = json.getInt("encoderB");

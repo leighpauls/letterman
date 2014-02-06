@@ -14,6 +14,7 @@ import ca.teamdave.letterman.auto.modes.ScoreTwo;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.ConfigLoader;
+import ca.teamdave.letterman.config.component.BlockerControlConfig;
 import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
@@ -21,6 +22,7 @@ import ca.teamdave.letterman.robotcomponents.Robot;
 import ca.teamdave.letterman.robotcomponents.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
+import org.json.me.JSONObject;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -80,26 +82,65 @@ public class LettermanMain extends IterativeRobot {
     public void teleopInit() {
         mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
 
+        // reload the control config
+        ConfigLoader.getInstance().loadConfigFromFile();
+        try {
+            JSONObject blockerControlJson = ConfigLoader.getInstance()
+                    .getConfigObject("robotConfig")
+                    .getJSONObject("blockerConfig")
+                    .getJSONObject("control");
+            mRobot.getBlocker().setControlConfig(new BlockerControlConfig(blockerControlJson));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to parse blocker control config");
+        }
+
         mRobot.getShooter().latchStop();
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
+
+        // drive control
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
 
+        // Shooter control
+        boolean rightBumper = mController.getRightBumper();
         if (mController.getBackButton()) {
             mRobot.getShooter().latchStop();
         } else if (mController.getStartButton()) {
             mRobot.getShooter().forceFeed();
-        } else if (mController.getRightBumper()) {
-            if (mRobot.getShooter().tryFiring()) {
-                System.out.println("Firing!!!");
-            } else {
-                System.out.println("Unable to fire");
-            }
+        } else if (rightBumper && mRobot.getIntake().tryShooting()) {
+            mRobot.getShooter().tryFiring();
         } else {
             mRobot.getShooter().tryRetracting();
         }
+
+        // blocker bar control
+        double rightStickPosition = mController.getYRight();
+        if (mController.getXButton()) {
+            mRobot.getBlocker().setTravelPosition();
+        } else if (mController.getYButton()) {
+            mRobot.getBlocker().setCatchPosition();
+        } else if (mController.getBButton()) {
+            mRobot.getBlocker().setBlockPosition();
+        } else if (Math.abs(rightStickPosition) > 0.3
+                || mRobot.getBlocker().isManualControl()) {
+            mRobot.getBlocker().setManualControl(rightStickPosition);
+        }
+
+        // intake control
+        mRobot.getIntake().setRollerAdjustment(mController.getTriggerDifference());
+        if (!rightBumper) {
+            if (mController.getDPadUp()) {
+                mRobot.getIntake().latchOut();
+            } else if (mController.getDPadDown()) {
+                mRobot.getIntake().latchIn();
+            } else if (mController.getAButton() || mController.getRightStickButton()) {
+                mRobot.getIntake().pickup();
+            }
+        }
+
     }
 
 

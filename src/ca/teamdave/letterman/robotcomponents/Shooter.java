@@ -1,5 +1,6 @@
 package ca.teamdave.letterman.robotcomponents;
 
+import ca.teamdave.letterman.DaveUtils;
 import ca.teamdave.letterman.EnumerationClass;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
@@ -12,22 +13,22 @@ import edu.wpi.first.wpilibj.Victor;
  * Controls the catapult cam
  */
 public class Shooter implements BackgroundUpdatingComponent {
+    // outputs
     private final Victor[] mVictors;
     private final boolean mOutputInverted;
 
+    // input params
     private final DigitalInput mReadyPositionSwitch;
     private final double mPostFirePauseThreshold;
     private final double mLostReadinessThreshold;
 
+    // control state
     private FiringState mState;
     private double mPostFirePauseCount;
     private double mLostReadinessCount;
 
     public Shooter(ShooterConfig config) {
-        mVictors = new Victor[config.victors.length];
-        for (int i = 0; i < mVictors.length; ++i) {
-            mVictors[i] = new Victor(config.victors[i]);
-        }
+        mVictors = DaveUtils.getVictorSet(config.victors);
         mOutputInverted = config.outputInverted;
 
         mReadyPositionSwitch = new DigitalInput(config.limitSwitch);

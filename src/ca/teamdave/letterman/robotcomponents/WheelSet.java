@@ -4,6 +4,7 @@
  */
 package ca.teamdave.letterman.robotcomponents;
 
+import ca.teamdave.letterman.DaveUtils;
 import ca.teamdave.letterman.config.component.WheelSetConfig;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Victor;
@@ -24,10 +25,7 @@ public class WheelSet {
     private final double DEADZONE = 0.1;
 
     public WheelSet(WheelSetConfig config) {
-        mVictors = new Victor[config.victorChannels.length];
-        for (int i = 0; i < mVictors.length; ++i) {
-            mVictors[i] = new Victor(config.victorChannels[i]);
-        }
+        mVictors = DaveUtils.getVictorSet(config.victorChannels);
         mOutputInverted = config.outputInverted;
 
         mEncoder = new Encoder(config.encoderA, config.encoderB, config.inputInverted);
