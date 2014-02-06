@@ -65,6 +65,8 @@ public class LettermanMain extends IterativeRobot {
         }
         mRobot.getDriveBase().reset(mode.getInitialPose());
         mAutoModeRunner = new AutoModeRunner(mode);
+
+        mRobot.getShooter().latchStop();
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
@@ -77,6 +79,8 @@ public class LettermanMain extends IterativeRobot {
     /** Called once at the start of teleop */
     public void teleopInit() {
         mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
+
+        mRobot.getShooter().latchStop();
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
