@@ -41,15 +41,15 @@
 
     "blockerConfig": {
       "hardware": {
-        "victors": [4],
+        "victors": [10],
         "potChannel": 2
       },
       "control": {
         "degreesPerVolt": 30,
         "offsetDegrees": 0,
-        "invertOutput": false,
+        "invertOutput": true,
         "pidConfig": {
-          "p": 0.01,
+          "p": 0,
           "i": 0,
           "d": 0
         },
@@ -60,7 +60,7 @@
     },
 
     "intakeConfig": {
-      "victorChannel": 5,
+      "victorChannel": 4,
       "armInRelay": 1,
       "armOutRelay": 2,
       "retractionTime": 0.75,

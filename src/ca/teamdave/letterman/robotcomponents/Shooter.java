@@ -39,7 +39,7 @@ public class Shooter implements BackgroundUpdatingComponent {
         mPostFirePauseCount = 0;
         mLostReadinessCount = 0;
 
-        mState = FiringState.READY_TO_FIRE;
+        mState = FiringState.LATCHED_STOP;
 
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
@@ -64,9 +64,7 @@ public class Shooter implements BackgroundUpdatingComponent {
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
         // update the state machine
-        System.out.print("Limit: " + mReadyPositionSwitch.get() + " ");
         if (mState == FiringState.FIRING) {
-            System.out.println("Firing");
             if (mReadyPositionSwitch.get()) {
                 // the cam hasn't released yet, drive further forward
                 setVictors(1.0);
@@ -80,7 +78,6 @@ public class Shooter implements BackgroundUpdatingComponent {
                 }
             }
         } else if (mState == FiringState.RETRACTING) {
-            System.out.println("Retracting");
             if (mReadyPositionSwitch.get()) {
                 // I'm in the ready position
                 setVictors(0.0);
@@ -91,7 +88,6 @@ public class Shooter implements BackgroundUpdatingComponent {
                 setVictors(1.0);
             }
         } else if (mState == FiringState.READY_TO_FIRE) {
-            System.out.println("Ready to fire");
             setVictors(0.0);
             if (mReadyPositionSwitch.get()) {
                 mLostReadinessCount = 0;
@@ -103,12 +99,10 @@ public class Shooter implements BackgroundUpdatingComponent {
                 }
             }
         } else if (mState == FiringState.FORCE_FEED) {
-            System.out.println("Force feed");
             setVictors(0.7);
             // immediately flip back to the stopped state, so this state must be forced each cycle
             mState = FiringState.LATCHED_STOP;
         } else if (mState == FiringState.LATCHED_STOP) {
-            System.out.println("Latched Stop");
             setVictors(0.0);
             // don't exit this state on my own
         } else {
@@ -127,6 +121,11 @@ public class Shooter implements BackgroundUpdatingComponent {
         }
         if (mState == FiringState.RETRACTING) {
             // can't start firing yet
+            return false;
+        }
+        if (mState == FiringState.LATCHED_STOP) {
+            // just try to feed
+            mState = FiringState.RETRACTING;
             return false;
         }
 

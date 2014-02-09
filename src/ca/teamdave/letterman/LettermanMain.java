@@ -50,6 +50,7 @@ public class LettermanMain extends IterativeRobot {
             throw new RuntimeException("Failed to parse robot config");
         }
         mController = new XboxGamePad(1);
+        mRobot.getShooter().latchStop();
     }
 
 
@@ -130,7 +131,7 @@ public class LettermanMain extends IterativeRobot {
         }
 
         // intake control
-        mRobot.getIntake().setRollerAdjustment(mController.getTriggerDifference());
+        mRobot.getIntake().setRollerAdjustment(-mController.getTriggerDifference());
         if (!rightBumper) {
             if (mController.getDPadUp()) {
                 mRobot.getIntake().latchOut();
@@ -147,6 +148,7 @@ public class LettermanMain extends IterativeRobot {
     public void disabledInit() {
         mAutoModeRunner = null;
         ConfigLoader.getInstance().loadConfigFromFile();
+        mRobot.getShooter().latchStop();
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {
