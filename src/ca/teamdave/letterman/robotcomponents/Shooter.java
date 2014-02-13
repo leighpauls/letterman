@@ -21,11 +21,13 @@ public class Shooter implements BackgroundUpdatingComponent {
     private final DigitalInput mReadyPositionSwitch;
     private final double mPostFirePauseThreshold;
     private final double mLostReadinessThreshold;
+    private final double mSwitchDebounceTimeThreshold;
 
     // control state
     private FiringState mState;
     private double mPostFirePauseCount;
     private double mLostReadinessCount;
+    private double mSwitchDebounceTimeCount;
 
     public Shooter(ShooterConfig config) {
         mVictors = DaveUtils.getVictorSet(config.victors);
@@ -35,9 +37,11 @@ public class Shooter implements BackgroundUpdatingComponent {
 
         mPostFirePauseThreshold = config.postFirePause;
         mLostReadinessThreshold = config.lostReadinessTime;
+        mSwitchDebounceTimeThreshold = config.switchDebounceTime;
 
         mPostFirePauseCount = 0;
         mLostReadinessCount = 0;
+        mSwitchDebounceTimeCount = 0;
 
         mState = FiringState.LATCHED_STOP;
 
@@ -75,17 +79,22 @@ public class Shooter implements BackgroundUpdatingComponent {
                 mPostFirePauseCount += deltaTime;
                 if (mPostFirePauseCount >= mPostFirePauseThreshold) {
                     mState = FiringState.RETRACTING;
+                    mSwitchDebounceTimeCount = 0;
                 }
             }
         } else if (mState == FiringState.RETRACTING) {
             if (mReadyPositionSwitch.get()) {
-                // I'm in the ready position
-                setVictors(0.0);
-                mState = FiringState.READY_TO_FIRE;
-                mLostReadinessCount = 0;
+                mSwitchDebounceTimeCount += deltaTime;
+                if (mSwitchDebounceTimeCount >= mSwitchDebounceTimeThreshold) {
+                    // I'm in the ready position
+                    setVictors(0.0);
+                    mState = FiringState.READY_TO_FIRE;
+                    mLostReadinessCount = 0;
+                }
             } else {
                 // keep retracting
                 setVictors(1.0);
+                mSwitchDebounceTimeCount = 0;
             }
         } else if (mState == FiringState.READY_TO_FIRE) {
             setVictors(0.0);
@@ -95,6 +104,7 @@ public class Shooter implements BackgroundUpdatingComponent {
                 mLostReadinessCount += deltaTime;
                 if (mLostReadinessCount > mLostReadinessThreshold) {
                     mState = FiringState.RETRACTING;
+                    mSwitchDebounceTimeCount = 0;
                     mLostReadinessCount = 0;
                 }
             }
@@ -125,6 +135,7 @@ public class Shooter implements BackgroundUpdatingComponent {
         }
         if (mState == FiringState.LATCHED_STOP) {
             // just try to feed
+            mSwitchDebounceTimeCount = 0;
             mState = FiringState.RETRACTING;
             return false;
         }
@@ -155,14 +166,17 @@ public class Shooter implements BackgroundUpdatingComponent {
      * Try kicking the shooter into retracting mode.
      * @return true iff the shooter is now retracting
      */
-    public boolean tryRetracting() {
+    public boolean tryRetracting(boolean forceUnlatch) {
         if (mState == FiringState.READY_TO_FIRE
                 || mState == FiringState.LATCHED_STOP
-                || mState == FiringState.FORCE_FEED) {
+                || (mState == FiringState.FORCE_FEED && !forceUnlatch)) {
             // won't override these states to retract
             return false;
         }
-        mState = FiringState.RETRACTING;
+        if (mState != FiringState.RETRACTING) {
+            mState = FiringState.RETRACTING;
+            mSwitchDebounceTimeCount = 0;
+        }
         return true;
     }
 }

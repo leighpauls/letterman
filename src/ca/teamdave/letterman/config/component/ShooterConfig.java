@@ -14,6 +14,7 @@ public class ShooterConfig {
     public final int limitSwitch;
     public final double postFirePause;
     public final double lostReadinessTime;
+    public final double switchDebounceTime;
 
     public ShooterConfig(JSONObject json) throws JSONException {
         victors = DaveUtils.toIntArray(json.getJSONArray("victors"));
@@ -23,6 +24,6 @@ public class ShooterConfig {
 
         postFirePause = json.getDouble("postFirePause");
         lostReadinessTime = json.getDouble("lostReadinessTime");
-
+        switchDebounceTime = json.getDouble("switchDebounceTime");
     }
 }

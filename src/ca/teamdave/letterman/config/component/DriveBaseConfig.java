@@ -13,6 +13,8 @@ public class DriveBaseConfig {
     public final WheelSetConfig leftWheelSet;
     public final WheelSetConfig rightWheelSet;
     public final RobotPose initialPose;
+    public final int highGearSolenoid;
+    public final int lowGearSolenoid;
 
     public DriveBaseConfig(JSONObject json) throws JSONException {
         gyroChannel = json.getInt("gyroChannel");
@@ -20,5 +22,7 @@ public class DriveBaseConfig {
         leftWheelSet = new WheelSetConfig(json.getJSONObject("leftWheelSet"));
         rightWheelSet = new WheelSetConfig(json.getJSONObject("rightWheelSet"));
         initialPose = new RobotPose(json.getJSONObject("initialPose"));
+        highGearSolenoid = json.getInt("highGearSolenoid");
+        lowGearSolenoid = json.getInt("lowGearSolenoid");
     }
 }

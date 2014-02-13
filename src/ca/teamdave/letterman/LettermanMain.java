@@ -18,6 +18,7 @@ import ca.teamdave.letterman.config.component.BlockerControlConfig;
 import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
+import ca.teamdave.letterman.robotcomponents.DriveBase;
 import ca.teamdave.letterman.robotcomponents.Robot;
 import ca.teamdave.letterman.robotcomponents.Shooter;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -70,6 +71,7 @@ public class LettermanMain extends IterativeRobot {
         mAutoModeRunner = new AutoModeRunner(mode);
 
         mRobot.getShooter().latchStop();
+        mRobot.getIntake().latchIn();
     }
     /** called every 20ms in auto */
     public void autonomousPeriodic() {
@@ -97,6 +99,7 @@ public class LettermanMain extends IterativeRobot {
         }
 
         mRobot.getShooter().latchStop();
+        mRobot.getIntake().latchIn();
     }
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
@@ -104,6 +107,9 @@ public class LettermanMain extends IterativeRobot {
 
         // drive control
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
+        mRobot.getDriveBase().setGearState(mController.getLeftStickButton()
+                ? DriveBase.GearState.LOW_GEAR
+                : DriveBase.GearState.HIGH_GEAR);
 
         // Shooter control
         boolean rightBumper = mController.getRightBumper();
@@ -111,10 +117,14 @@ public class LettermanMain extends IterativeRobot {
             mRobot.getShooter().latchStop();
         } else if (mController.getStartButton()) {
             mRobot.getShooter().forceFeed();
-        } else if (rightBumper && mRobot.getIntake().tryShooting()) {
-            mRobot.getShooter().tryFiring();
+        } else if (rightBumper) {
+            if (mRobot.getIntake().tryShooting()) {
+                mRobot.getShooter().tryFiring();
+            } else {
+                mRobot.getShooter().tryRetracting(true);
+            }
         } else {
-            mRobot.getShooter().tryRetracting();
+            mRobot.getShooter().tryRetracting(false);
         }
 
         // blocker bar control
@@ -133,9 +143,9 @@ public class LettermanMain extends IterativeRobot {
         // intake control
         mRobot.getIntake().setRollerAdjustment(-mController.getTriggerDifference());
         if (!rightBumper) {
-            if (mController.getDPadUp()) {
+            if (mController.getDPadLeft()) {
                 mRobot.getIntake().latchOut();
-            } else if (mController.getDPadDown()) {
+            } else if (mController.getDPadRight()) {
                 mRobot.getIntake().latchIn();
             } else if (mController.getAButton() || mController.getRightStickButton()) {
                 mRobot.getIntake().pickup();

@@ -78,7 +78,7 @@ public class Intake implements BackgroundUpdatingComponent {
                 mState = IntakeState.TRAVEL;
             }
         } else if (mState == IntakeState.SHOOT_EXTENDING) {
-            rollerPower = -0.5;
+            rollerPower = 0.25;
             armOut = true;
             mExtensionCount += deltaTime;
             if (mExtensionCount > mExtensionTime) {

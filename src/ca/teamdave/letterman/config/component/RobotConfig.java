@@ -11,11 +11,16 @@ public class RobotConfig {
     public final ShooterConfig shooterConfig;
     public final BlockerConfig blockerConfig;
     public final IntakeConfig intakeConfig;
+    public final int compressorSwitch;
+    public final int compressorRelay;
 
     public RobotConfig(JSONObject json) throws JSONException {
         driveConfig = new DriveBaseConfig(json.getJSONObject("driveBaseConfig"));
         shooterConfig = new ShooterConfig(json.getJSONObject("shooterConfig"));
         blockerConfig = new BlockerConfig(json.getJSONObject("blockerConfig"));
         intakeConfig = new IntakeConfig(json.getJSONObject("intakeConfig"));
+
+        compressorSwitch = json.getInt("compressorSwitch");
+        compressorRelay = json.getInt("compressorRelay");
     }
 }

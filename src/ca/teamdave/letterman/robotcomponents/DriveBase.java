@@ -1,5 +1,6 @@
 package ca.teamdave.letterman.robotcomponents;
 
+import ca.teamdave.letterman.EnumerationClass;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.background.RobotMode;
@@ -7,6 +8,7 @@ import ca.teamdave.letterman.config.component.DriveBaseConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.Solenoid;
 
 /**
  * Controls the driving subsystem
@@ -16,6 +18,8 @@ public class DriveBase implements BackgroundUpdatingComponent {
     private final WheelSet mLeft;
     private final WheelSet mRight;
     private final Gyro mGyro;
+    private final Solenoid mHighGearSolenoid;
+    private final Solenoid mLowGearSolenoid;
 
     private RobotPose mPose;
     private double mGyroOffset;
@@ -25,8 +29,13 @@ public class DriveBase implements BackgroundUpdatingComponent {
     public DriveBase(DriveBaseConfig config) {
         mLeft = new WheelSet(config.leftWheelSet);
         mRight = new WheelSet(config.rightWheelSet);
+
         mGyro = new Gyro(config.gyroChannel);
         mGyro.setSensitivity(config.gyroVoltSecondsPerDegree);
+
+        mHighGearSolenoid = new Solenoid(config.highGearSolenoid);
+        mLowGearSolenoid = new Solenoid(config.lowGearSolenoid);
+
 
         mPose = config.initialPose;
         mGyroOffset = mPose.getHeading();
@@ -77,5 +86,23 @@ public class DriveBase implements BackgroundUpdatingComponent {
 
     public double getTurnVelocity() {
         return mGyroRate;
+    }
+
+    public static class GearState extends EnumerationClass {
+        protected GearState(String name) {
+            super(name);
+        }
+        public static GearState HIGH_GEAR = new GearState("high_gear");
+        public static GearState LOW_GEAR = new GearState("low_gear");
+    }
+
+    public void setGearState(GearState gearState) {
+        if (gearState == GearState.HIGH_GEAR) {
+            mHighGearSolenoid.set(true);
+            mLowGearSolenoid.set(false);
+        } else {
+            mHighGearSolenoid.set(false);
+            mLowGearSolenoid.set(true);
+        }
     }
 }
