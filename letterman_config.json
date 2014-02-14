@@ -9,18 +9,18 @@
       "highGearSolenoid": 1,
       "lowGearSolenoid": 2,
 
-      "leftWheelSet": {
+      "rightWheelSet": {
         "victorChannels": [5, 6, 7],
-        "outputInverted": false,
+        "outputInverted": true,
         "encoderA": 3,
         "encoderB": 4,
-        "inputInverted": false,
+        "inputInverted": true,
         "ticksPerFoot": 318.0
       },
 
-      "rightWheelSet": {
+      "leftWheelSet": {
         "victorChannels": [1, 2, 3],
-        "outputInverted": true,
+        "outputInverted": false,
         "encoderA": 5,
         "encoderB": 6,
         "inputInverted": false,
@@ -42,7 +42,7 @@
       "limitSwitch": 2,
       "postFirePause": 0.5,
       "lostReadinessTime": 0.5,
-      "switchDebounceTime": 0.03
+      "switchDebounceTime": 0.08
     },
 
     "blockerConfig": {
