@@ -28,5 +28,7 @@ public class RobotPose {
         return mHeading;
     }
 
-
+    public String toString() {
+        return mPosition.toString() + ", Dir: " + mHeading;
+    }
 }

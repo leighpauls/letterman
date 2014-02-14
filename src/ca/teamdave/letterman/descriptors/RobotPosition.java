@@ -41,4 +41,8 @@ public class RobotPosition {
         double deltaY = endPosition.mY - mY;
         return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
     }
+
+    public String toString() {
+        return "X: " + mX + ", Y: " + mY;
+    }
 }
