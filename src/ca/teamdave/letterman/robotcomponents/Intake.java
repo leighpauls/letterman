@@ -65,7 +65,7 @@ public class Intake implements BackgroundUpdatingComponent {
             rollerPower = 0;
             armOut = false;
         } else if (mState == IntakeState.PICKUP) {
-            rollerPower = 1.0;
+            rollerPower = 0.5;
             armOut = true;
             // put into retracting mode to force PICKUP to be momentary
             mState = IntakeState.PICKUP_RETRACTING;
