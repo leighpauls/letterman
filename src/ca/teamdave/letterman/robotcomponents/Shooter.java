@@ -28,6 +28,7 @@ public class Shooter implements BackgroundUpdatingComponent {
     private double mPostFirePauseCount;
     private double mLostReadinessCount;
     private double mSwitchDebounceTimeCount;
+    private int mCurShotId;
 
     public Shooter(ShooterConfig config) {
         mVictors = DaveUtils.getVictorSet(config.victors);
@@ -44,6 +45,7 @@ public class Shooter implements BackgroundUpdatingComponent {
         mSwitchDebounceTimeCount = 0;
 
         mState = FiringState.LATCHED_STOP;
+        mCurShotId = 0;
 
         BackgroundUpdateManager.getInstance().registerComponent(this);
     }
@@ -80,6 +82,7 @@ public class Shooter implements BackgroundUpdatingComponent {
                 if (mPostFirePauseCount >= mPostFirePauseThreshold) {
                     mState = FiringState.RETRACTING;
                     mSwitchDebounceTimeCount = 0;
+                    mCurShotId++;
                 }
             }
         } else if (mState == FiringState.RETRACTING) {
@@ -179,4 +182,14 @@ public class Shooter implements BackgroundUpdatingComponent {
         }
         return true;
     }
+
+    /**
+     * Use the shot id to identify when one shot has finished and another is starting
+     * @return The current ShotId, corresponding to either the shot in progress, or the shot that
+     * will happen after this retracting finishes
+     */
+    public int getCurShotId() {
+        return mCurShotId;
+    }
+
 }

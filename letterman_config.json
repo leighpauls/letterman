@@ -61,7 +61,8 @@
         },
         "blockPosition": 0,
         "catchPosition": 45,
-        "travelPosition": 90
+        "travelPosition": 90,
+        "shotClearancePosition": 45
       }
     },
 
@@ -96,7 +97,24 @@
       "d": 0
     },
 
-    "scoreTwoDriving": {
+    "scoreOne": {
+      "trackLine": {
+        "lineOrigin": {"x": 0, "y", 0}
+        "lineDirection": 0,
+        "degreesPerFootError": 4,
+        "forwardSpeed": 4
+      },
+      "waitForRegion": {
+        "x1": 10, "y1": -14,
+        "x2": 18, "y2": 14
+      },
+      "stop": {
+        "forwardStopSpeed": 0.2,
+        "turnStopSpeed": 10
+      }
+    },
+
+    "scoreTwo": {
       "driveOut": {
         "trackLine": {
           "lineOrigin": {

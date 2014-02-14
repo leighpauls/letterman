@@ -36,6 +36,10 @@ public class ScoreTwo implements AutoMode {
         return new RobotPose(new RobotPosition(0, 0), 0);
     }
 
+    public String getVisibleName() {
+        return "Score Two";
+    }
+
     public AutoCommand getRootCommand() throws JSONException {
         // Common PID configurations
         PidControllerConfig dynamicTurnControl = new PidControllerConfig(
@@ -47,7 +51,7 @@ public class ScoreTwo implements AutoMode {
         PidControllerConfig speedControl = new PidControllerConfig(
                 mAutoConfig.getJSONObject("speedPid"));
 
-        JSONObject modeConfig = mAutoConfig.getJSONObject("scoreTwoDriving");
+        JSONObject modeConfig = mAutoConfig.getJSONObject("scoreTwo");
 
         // Parameters for driving to the shoot positions
         JSONObject driveOutJson = modeConfig.getJSONObject("driveOut");

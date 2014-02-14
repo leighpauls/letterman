@@ -9,4 +9,5 @@ import ca.teamdave.letterman.descriptors.RobotPose;
 public interface AutoMode {
     RobotPose getInitialPose();
     AutoCommand getRootCommand() throws Exception;
+    String getVisibleName();
 }

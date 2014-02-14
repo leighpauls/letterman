@@ -15,17 +15,23 @@ import edu.wpi.first.wpilibj.Victor;
  * Controls the blocker bar
  */
 public class Blocker implements BackgroundUpdatingComponent {
+    // hardware fields
     private final Victor[] mVictors;
     private final AnalogChannel mPotentiometer;
 
+    // control parameters
     private double mDegreesPerVolt;
     private double mOffsetDegrees;
     private boolean mInvertOutput;
-
     private PidController mPidController;
-    private double mBlockPosition, mCatchPosition, mTravelPosition;
 
+    // setpoint parameters
+    private double mBlockPosition, mCatchPosition, mTravelPosition;
+    private double mShotClearancePosition;
+
+    // control state info
     private BlockerSetPoint mTargetSetPoint;
+
 
     private static class BlockerSetPoint extends EnumerationClass {
         protected BlockerSetPoint(String name) {
@@ -55,6 +61,7 @@ public class Blocker implements BackgroundUpdatingComponent {
         mBlockPosition = config.blockPosition;
         mCatchPosition = config.catchPosition;
         mTravelPosition = config.travelPosition;
+        mShotClearancePosition = config.shotClearancePosition;
     }
 
     private void setVictors(double power) {
@@ -112,5 +119,12 @@ public class Blocker implements BackgroundUpdatingComponent {
 
     public boolean isManualControl() {
         return mTargetSetPoint == BlockerSetPoint.MANUAL_CONTROL;
+    }
+
+    /**
+     * @return true iff the blocker is low enough to shoot over
+     */
+    public boolean isClearForShot() {
+        return getBlockerPosition() > mShotClearancePosition;
     }
 }

@@ -16,6 +16,7 @@ public class BlockerControlConfig {
     public final double blockPosition;
     public final double catchPosition;
     public final double travelPosition;
+    public final double shotClearancePosition;
 
     public BlockerControlConfig(JSONObject json) throws JSONException {
         degreesPerVolt = json.getDouble("degreesPerVolt");
@@ -26,5 +27,6 @@ public class BlockerControlConfig {
         blockPosition = json.getDouble("blockPosition");
         catchPosition = json.getDouble("catchPosition");
         travelPosition = json.getDouble("travelPosition");
+        shotClearancePosition = json.getDouble("shotClearancePosition");
     }
 }

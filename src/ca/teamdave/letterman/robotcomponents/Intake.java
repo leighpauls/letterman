@@ -146,4 +146,8 @@ public class Intake implements BackgroundUpdatingComponent {
     public void setRollerAdjustment(double rollerAdjustment) {
         mRollerAdjustment = rollerAdjustment;
     }
+
+    public boolean isClearForShot() {
+        return mState == IntakeState.SHOOT_HOLDING;
+    }
 }

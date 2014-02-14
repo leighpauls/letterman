@@ -74,4 +74,8 @@ public class TestMode implements AutoMode {
                 new NoOp()
         });
     }
+
+    public String getVisibleName() {
+        return "Test Mode";
+    }
 }
