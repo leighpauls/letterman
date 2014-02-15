@@ -24,7 +24,7 @@ public class ScoreOne implements AutoMode {
     private final JSONObject mAutoConfig;
     private final Robot mRobot;
 
-    public ScoreOne(JSONObject autoConfig, Robot robot) {
+    public ScoreOne(Robot robot, JSONObject autoConfig) {
         mAutoConfig = autoConfig;
         mRobot = robot;
     }
