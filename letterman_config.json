@@ -15,7 +15,7 @@
         "encoderA": 3,
         "encoderB": 4,
         "inputInverted": true,
-        "ticksPerFoot": 318.0
+        "ticksPerFoot": 943.0
       },
 
       "leftWheelSet": {
@@ -24,7 +24,7 @@
         "encoderA": 5,
         "encoderB": 6,
         "inputInverted": false,
-        "ticksPerFoot": 318.0
+        "ticksPerFoot": 943.0
       },
 
       "initialPose": {
@@ -51,17 +51,17 @@
         "potChannel": 2
       },
       "control": {
-        "degreesPerVolt": 30,
-        "offsetDegrees": 0,
+        "degreesPerVolt": 60.40,
+        "offsetDegrees": -71,
         "invertOutput": true,
         "pidConfig": {
-          "p": 0,
-          "i": 0,
-          "d": 0
+          "p": 0.025,
+          "i": 0.0,
+          "d": 0.002
         },
-        "blockPosition": 0,
+        "blockPosition": 3,
         "catchPosition": 45,
-        "travelPosition": 90,
+        "travelPosition": 103,
         "shotClearancePosition": 45
       }
     },
@@ -99,7 +99,7 @@
 
     "scoreOne": {
       "trackLine": {
-        "lineOrigin": {"x": 0, "y", 0}
+        "lineOrigin": {"x": 0, "y": 0},
         "lineDirection": 0,
         "degreesPerFootError": 4,
         "forwardSpeed": 4

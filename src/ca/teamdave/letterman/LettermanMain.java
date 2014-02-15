@@ -40,6 +40,7 @@ public class LettermanMain extends IterativeRobot {
     private AutoModeRunner mAutoModeRunner;
     private AutoModeSelector mAutoModeSelector;
     private DriverStationLCD mDriverStationLCD;
+    private DriveBase.GearState mAutoShiftMode;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -104,6 +105,8 @@ public class LettermanMain extends IterativeRobot {
     public void teleopInit() {
         mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
 
+        mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
+
         // reload the control config
         ConfigLoader.getInstance().loadConfigFromFile();
         try {
@@ -117,18 +120,35 @@ public class LettermanMain extends IterativeRobot {
             throw new RuntimeException("Failed to parse blocker control config");
         }
 
+        mRobot.getBlocker().setManualControl(0.0);
         mRobot.getShooter().latchStop();
         mRobot.getIntake().latchIn();
     }
+
+    private void updateTransmission() {
+        double absSpeed = Math.abs(mRobot.getDriveBase().getForwardVelocity());
+
+        if (mController.getLeftStickButton()) {
+            // manual override to high
+            mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
+        } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.5) {
+            // hysteresis transition to high
+            mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
+        } else if (mAutoShiftMode == DriveBase.GearState.HIGH_GEAR && absSpeed < 4.5) {
+            // hysteresis transition to low
+            mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
+        }
+
+        mRobot.getDriveBase().setGearState(mAutoShiftMode);
+    }
+
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
         BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
 
         // drive control
         mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
-        mRobot.getDriveBase().setGearState(mController.getLeftStickButton()
-                ? DriveBase.GearState.LOW_GEAR
-                : DriveBase.GearState.HIGH_GEAR);
+        updateTransmission();
 
         // Shooter control
         boolean rightBumper = mController.getRightBumper();

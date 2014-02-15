@@ -3,6 +3,7 @@ package ca.teamdave.letterman.robotcomponents;
 import ca.teamdave.letterman.DaveUtils;
 import ca.teamdave.letterman.EnumerationClass;
 import ca.teamdave.letterman.PidController;
+import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.component.BlockerConfig;
@@ -50,6 +51,8 @@ public class Blocker implements BackgroundUpdatingComponent {
         setControlConfig(config.controlConfig);
 
         mTargetSetPoint = BlockerSetPoint.TRAVEL;
+
+        BackgroundUpdateManager.getInstance().registerComponent(this);
     }
 
     public void setControlConfig(BlockerControlConfig config) {
@@ -62,6 +65,10 @@ public class Blocker implements BackgroundUpdatingComponent {
         mCatchPosition = config.catchPosition;
         mTravelPosition = config.travelPosition;
         mShotClearancePosition = config.shotClearancePosition;
+
+        if (mTargetSetPoint != BlockerSetPoint.MANUAL_CONTROL) {
+            mPidController.reset(getSetPoint(), getBlockerPosition());
+        }
     }
 
     private void setVictors(double power) {
@@ -71,15 +78,18 @@ public class Blocker implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
+        System.out.println("Blocker Pos: " + getBlockerPosition());
         if (mTargetSetPoint == BlockerSetPoint.MANUAL_CONTROL) {
             return;
         }
         // PID control to the current set point
-        setVictors(mPidController.update(deltaTime, getSetPoint(), getBlockerPosition()));
+        double output = mPidController.update(deltaTime, getSetPoint(), getBlockerPosition());
+        output = Math.min(0.5, Math.max(-0.5, output));
+        setVictors(output);
     }
 
     private double getBlockerPosition() {
-        return mPotentiometer.getVoltage() * mDegreesPerVolt + mOffsetDegrees;
+        return mPotentiometer.getAverageVoltage() * mDegreesPerVolt + mOffsetDegrees;
     }
 
     private double getSetPoint() {
@@ -96,6 +106,7 @@ public class Blocker implements BackgroundUpdatingComponent {
 
     public void setManualControl(double power) {
         mTargetSetPoint = BlockerSetPoint.MANUAL_CONTROL;
+        power = Math.min(0.5, Math.max(-0.5, power));
         setVictors(power);
     }
     public void setBlockPosition() {
