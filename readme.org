@@ -1,0 +1,23 @@
+* Letterman Robot Code
+Team Dave's 2014 robot code project "Letterman".
+
+** Auto Mode
+It's not tuned, don't run it, the robot will break from it.
+
+** Wiring
+The config file (letterman_config.json) should describe most of the wiring fairly well, but the practice bot can also serve as a template.
+
+** Download instructions
+There are 2 steps to download the code. This must all be done while connected to the robot's network (SSID "3683P" for the practice bot, SSID "3683" for the comp bot)
+
+*** Step 1: Config File
+First is downloading the config file. Using ftp, send the file "letterman_config.json" (located in the root of this project directory) to the root directory of the cRIO, (as "/letterman_config.json").
+
+Using command line command "ftp" from the root of the project directory on any operating system, you should be able to use  the commands:
+
+ > o 10.36.83.2
+ > send letterman_config.json
+
+*** Step 2: Code Download
+Simply open the project in netbeans and hit the run button. The terminal should pop up with some info about the crio rebooting, and eventually some info on the reed switch state.
+
