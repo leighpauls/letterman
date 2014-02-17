@@ -39,7 +39,7 @@ public class CameraThread implements Runnable {
     public CameraThread() {
         mTargetInfoDelegate = new TargetInfoDelegate();
         mThread = new Thread(this);
-        mThread.start();
+        // mThread.start();
     }
 
     public TargetInfoDelegate getTargetInfoDelegate() {
@@ -75,10 +75,17 @@ public class CameraThread implements Runnable {
                 rawImage.free();
                 thresholdedImage.free();
                 particleFilteredImage.free();
+
             } catch (AxisCameraException e) {
                 // System.out.println("Axis camera not available yet");
             } catch (NIVisionException e) {
                 System.out.println("NI Vision exception...");
+                e.printStackTrace();
+            }
+
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

@@ -69,9 +69,10 @@ public class Shooter implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
+        System.out.println("Limit Switch: " + mReadyPositionSwitch.get());
         // update the state machine
         if (mState == FiringState.FIRING) {
-            if (mReadyPositionSwitch.get()) {
+            if (!mReadyPositionSwitch.get()) {
                 // the cam hasn't released yet, drive further forward
                 setVictors(1.0);
                 mPostFirePauseCount = 0.0;
@@ -86,7 +87,7 @@ public class Shooter implements BackgroundUpdatingComponent {
                 }
             }
         } else if (mState == FiringState.RETRACTING) {
-            if (mReadyPositionSwitch.get()) {
+            if (!mReadyPositionSwitch.get()) {
                 mSwitchDebounceTimeCount += deltaTime;
                 if (mSwitchDebounceTimeCount >= mSwitchDebounceTimeThreshold) {
                     // I'm in the ready position
@@ -101,7 +102,7 @@ public class Shooter implements BackgroundUpdatingComponent {
             }
         } else if (mState == FiringState.READY_TO_FIRE) {
             setVictors(0.0);
-            if (mReadyPositionSwitch.get()) {
+            if (!mReadyPositionSwitch.get()) {
                 mLostReadinessCount = 0;
             } else {
                 mLostReadinessCount += deltaTime;

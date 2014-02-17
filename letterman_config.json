@@ -39,10 +39,10 @@
     "shooterConfig": {
       "victors": [8, 9],
       "outputInverted": false,
-      "limitSwitch": 2,
+      "limitSwitch": 1,
       "postFirePause": 0.5,
       "lostReadinessTime": 0.5,
-      "switchDebounceTime": 0.08
+      "switchDebounceTime": 0.0
     },
 
     "blockerConfig": {
@@ -71,7 +71,7 @@
       "armInRelay": 4,
       "armOutRelay": 3,
       "retractionTime": 0.75,
-      "extensionTime": 0.3
+      "extensionTime": 0.25
     }
   },
 

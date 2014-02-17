@@ -65,10 +65,7 @@ public class Blocker implements BackgroundUpdatingComponent {
         mCatchPosition = config.catchPosition;
         mTravelPosition = config.travelPosition;
         mShotClearancePosition = config.shotClearancePosition;
-
-        if (mTargetSetPoint != BlockerSetPoint.MANUAL_CONTROL) {
-            mPidController.reset(getSetPoint(), getBlockerPosition());
-        }
+        mTargetSetPoint = BlockerSetPoint.MANUAL_CONTROL;
     }
 
     private void setVictors(double power) {
@@ -78,7 +75,6 @@ public class Blocker implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
-        System.out.println("Blocker Pos: " + getBlockerPosition());
         if (mTargetSetPoint == BlockerSetPoint.MANUAL_CONTROL) {
             return;
         }
