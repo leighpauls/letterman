@@ -7,7 +7,7 @@ package ca.teamdave.letterman;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
- *
+ * Wrapper class for the xbox game pad as a joystick
  * @author leighpauls
  */
 public class XboxGamePad {
@@ -26,7 +26,7 @@ public class XboxGamePad {
         jsValue -= DEADBAND_RADIUS * DaveUtils.sign(jsValue);
         jsValue *= (1.0 - DEADBAND_RADIUS);
         // TODO: should this value be squared for a shallower curve?
-        return  jsValue;
+        return jsValue;
     }
     
     public double getXLeft() {
