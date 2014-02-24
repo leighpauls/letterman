@@ -16,9 +16,17 @@ public class XboxGamePad {
     public XboxGamePad(int port) {
         mPad = new Joystick(port);
     }
-    
+
+    private static final double DEADBAND_RADIUS = 0.15;
     private static double deadband(double jsValue) {
-        return (Math.abs(jsValue) < 0.15) ? 0.0 : (jsValue * jsValue * DaveUtils.sign(jsValue));
+        if (Math.abs(jsValue) < DEADBAND_RADIUS) {
+            return 0;
+        }
+        // re-linearize outside of the deadband
+        jsValue -= DEADBAND_RADIUS * DaveUtils.sign(jsValue);
+        jsValue *= (1.0 - DEADBAND_RADIUS);
+        // TODO: should this value be squared for a shallower curve?
+        return  jsValue;
     }
     
     public double getXLeft() {
