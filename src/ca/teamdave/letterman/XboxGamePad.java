@@ -24,7 +24,7 @@ public class XboxGamePad {
         }
         // re-linearize outside of the deadband
         jsValue -= DEADBAND_RADIUS * DaveUtils.sign(jsValue);
-        jsValue *= (1.0 - DEADBAND_RADIUS);
+        jsValue *= 1.0 / (1.0 - DEADBAND_RADIUS);
         // TODO: should this value be squared for a shallower curve?
         return jsValue;
     }

@@ -68,13 +68,9 @@ public class LettermanMain extends IterativeRobot {
         mRobot.getShooter().latchStop();
     }
 
-
-    /** Called once at the start of auto */
-    public void autonomousInit() {
-        System.out.println("Auto Init running");
-
+    private void reloadConfig() {
         // TODO: before competition; only load the config file on disabled-init
-        // get the latest config file version
+        // get the latest auton config file version
         ConfigLoader.getInstance().loadConfigFromFile();
         try {
             mAutoModeSelector.resetModes(
@@ -84,28 +80,6 @@ public class LettermanMain extends IterativeRobot {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse robot config");
         }
-
-        // set up the new auto mode
-        AutoMode mode = mAutoModeSelector.getSelectedMode();
-        mRobot.getDriveBase().reset(mode.getInitialPose());
-        mAutoModeRunner = new AutoModeRunner(mode);
-
-        mRobot.getShooter().latchStop();
-        mRobot.getIntake().latchIn();
-    }
-    /** called every 20ms in auto */
-    public void autonomousPeriodic() {
-        double cycleTime = BackgroundUpdateManager.getInstance().runUpdates(RobotMode.AUTO);
-        mRobot.getShooter().latchStop();
-        mAutoModeRunner.runCycle(cycleTime);
-    }
-
-
-    /** Called once at the start of teleop */
-    public void teleopInit() {
-        mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
-
-        mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
 
         // reload the control config
         ConfigLoader.getInstance().loadConfigFromFile();
@@ -119,10 +93,39 @@ public class LettermanMain extends IterativeRobot {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse blocker control config");
         }
+    }
 
+    /** Called once at the start of auto */
+    public void autonomousInit() {
+        System.out.println("Auto Init running");
+
+
+        mRobot.getShooter().latchStop();
+        mRobot.getIntake().latchIn();
+        mRobot.getBlocker().setManualControl(0);
+
+        // set up the new auto mode
+        AutoMode mode = mAutoModeSelector.getSelectedMode();
+        mRobot.getDriveBase().reset(mode.getInitialPose());
+        mAutoModeRunner = new AutoModeRunner(mode);
+    }
+    /** called every 20ms in auto */
+    public void autonomousPeriodic() {
+        double cycleTime = BackgroundUpdateManager.getInstance().runUpdates(RobotMode.AUTO);
+        mAutoModeRunner.runCycle(cycleTime);
+    }
+
+
+    /** Called once at the start of teleop */
+    public void teleopInit() {
+        mRobot.getDriveBase().reset(new RobotPose(new RobotPosition(0, 0), 0));
+
+        mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
         mRobot.getBlocker().setManualControl(0.0);
         mRobot.getShooter().latchStop();
         mRobot.getIntake().latchIn();
+
+        reloadConfig();
     }
 
     private void updateTransmission() {
@@ -131,7 +134,7 @@ public class LettermanMain extends IterativeRobot {
         if (mController.getLeftStickButton()) {
             // manual override to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
-        } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.5) {
+        } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.2) {
             // hysteresis transition to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
         } else if (mAutoShiftMode == DriveBase.GearState.HIGH_GEAR && absSpeed < 4.5) {

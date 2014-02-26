@@ -14,8 +14,8 @@
         "outputInverted": true,
         "encoderA": 3,
         "encoderB": 4,
-        "inputInverted": true,
-        "ticksPerFoot": 943.0
+        "inputInverted": false,
+        "ticksPerFoot": 1886.0
       },
 
       "leftWheelSet": {
@@ -23,8 +23,8 @@
         "outputInverted": false,
         "encoderA": 5,
         "encoderB": 6,
-        "inputInverted": false,
-        "ticksPerFoot": 943.0
+        "inputInverted": true,
+        "ticksPerFoot": 1886.0
       },
 
       "initialPose": {
@@ -52,8 +52,8 @@
       },
       "control": {
         "degreesPerVolt": 60.40,
-        "offsetDegrees": -71,
-        "invertOutput": true,
+        "offsetDegrees": -63,
+        "invertOutput": false,
         "pidConfig": {
           "p": 0.025,
           "i": 0.0,
@@ -62,7 +62,7 @@
         "blockPosition": 3,
         "catchPosition": 45,
         "travelPosition": 103,
-        "shotClearancePosition": 45
+        "shotClearancePosition": 50
       }
     },
 
@@ -71,7 +71,7 @@
       "armInRelay": 4,
       "armOutRelay": 3,
       "retractionTime": 0.75,
-      "extensionTime": 0.25
+      "extensionTime": 0.35
     }
   },
 
@@ -82,9 +82,9 @@
       "d": 0.001
     },
     "staticTurnPid": {
-      "p": 0.005,
-      "i": 0.01,
-      "d": 0.001
+      "p": 0.01,
+      "i": 0.0,
+      "d": 0.0
     },
     "drivePid": {
       "p": 2,
@@ -105,7 +105,7 @@
         "forwardSpeed": 4
       },
       "waitForRegion": {
-        "x1": 10, "y1": -14,
+        "x1": 5, "y1": -14,
         "x2": 18, "y2": 14
       },
       "stop": {
@@ -125,7 +125,7 @@
           "forwardSpeed": 9
         },
         "waitForRegion": {
-          "x1": 10, "y1": -14,
+          "x1": 5, "y1": -14,
           "x2": 18, "y2": 14
         }
       },
@@ -146,10 +146,10 @@
           },
           "lineDirection": 0,
           "degreesPerFootError": 9,
-          "forwardSpeed": -8
+          "forwardSpeed": -4
         },
         "waitForRegion": {
-          "x1": -1.5, "y1": -14,
+          "x1": -1.0, "y1": -14,
           "x2": -9, "y2": 14
         }
       }

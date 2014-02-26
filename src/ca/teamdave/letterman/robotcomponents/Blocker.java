@@ -10,6 +10,7 @@ import ca.teamdave.letterman.config.component.BlockerConfig;
 import ca.teamdave.letterman.config.component.BlockerControlConfig;
 import ca.teamdave.letterman.config.component.BlockerHardwareConfig;
 import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -75,6 +76,12 @@ public class Blocker implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
+        DriverStationLCD.getInstance().println(
+                DriverStationLCD.Line.kUser2,
+                1,
+                "blocker: " + getBlockerPosition() + "                  ");
+        DriverStationLCD.getInstance().updateLCD();
+
         if (mTargetSetPoint == BlockerSetPoint.MANUAL_CONTROL) {
             return;
         }
@@ -102,7 +109,7 @@ public class Blocker implements BackgroundUpdatingComponent {
 
     public void setManualControl(double power) {
         mTargetSetPoint = BlockerSetPoint.MANUAL_CONTROL;
-        power = Math.min(0.5, Math.max(-0.5, power));
+        power = Math.min(0.6, Math.max(-0.6, power));
         setVictors(power);
     }
     public void setBlockPosition() {
@@ -132,6 +139,6 @@ public class Blocker implements BackgroundUpdatingComponent {
      * @return true iff the blocker is low enough to shoot over
      */
     public boolean isClearForShot() {
-        return getBlockerPosition() > mShotClearancePosition;
+        return getBlockerPosition() < mShotClearancePosition;
     }
 }

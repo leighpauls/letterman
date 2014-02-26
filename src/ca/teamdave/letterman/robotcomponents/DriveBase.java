@@ -7,6 +7,7 @@ import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.component.DriveBaseConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -63,6 +64,16 @@ public class DriveBase implements BackgroundUpdatingComponent {
                         mPose.getPosition().getX() + deltaX,
                         mPose.getPosition().getY() + deltaY),
                 headingDegrees);
+
+        DriverStationLCD.getInstance().println(
+                DriverStationLCD.Line.kUser3,
+                1,
+                "X: " + (int)mPose.getPosition().getX()
+                        + ", Y: " + (int)mPose.getPosition().getY()
+                        + ", D: " + (int)mPose.getHeading()
+                        + "                ");
+        DriverStationLCD.getInstance().updateLCD();
+
     }
 
     public void setArcade(double forward, double sideways) {

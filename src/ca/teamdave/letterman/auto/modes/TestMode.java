@@ -7,6 +7,7 @@ import ca.teamdave.letterman.auto.commands.drive.*;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
 import ca.teamdave.letterman.auto.commands.meta.Pause;
 import ca.teamdave.letterman.auto.commands.meta.Series;
+import ca.teamdave.letterman.auto.commands.shoot.FireAndRetract;
 import ca.teamdave.letterman.config.command.DriveToDistConfig;
 import ca.teamdave.letterman.config.command.TrackLineConfig;
 import ca.teamdave.letterman.config.command.TurnToHeadingConfig;
@@ -15,6 +16,8 @@ import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
+import ca.teamdave.letterman.robotcomponents.Robot;
+import ca.teamdave.letterman.robotcomponents.Shooter;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 
@@ -22,11 +25,11 @@ import org.json.me.JSONObject;
  * This class is just for testing individual commands
  */
 public class TestMode implements AutoMode {
-    private final DriveBase mDriveBase;
+    private final Robot mRobot;
     private final JSONObject mAutoConfig;
 
-    public TestMode(DriveBase driveBase, JSONObject config) {
-        mDriveBase = driveBase;
+    public TestMode(Robot robot, JSONObject config) {
+        mRobot = robot;
         mAutoConfig = config;
     }
 
@@ -41,36 +44,11 @@ public class TestMode implements AutoMode {
                 mAutoConfig.getJSONObject("staticTurnPid"));
         PidControllerConfig driveController = new PidControllerConfig(
                 mAutoConfig.getJSONObject("drivePid"));
-
         PidControllerConfig speedController = new PidControllerConfig(
                 mAutoConfig.getJSONObject("speedPid"));
 
-        JSONObject modeConfig = mAutoConfig.getJSONObject("testMode");
-
         return new Series(new AutoCommand[]{
-                new Latch(new AutoCommand[]{
-                        new TrackLine(
-                                new TrackLineConfig(
-                                        modeConfig.getJSONObject("trackLine"),
-                                        dynamicTurnController,
-                                        speedController),
-                                mDriveBase),
-                        new Pause(10)
-                        /* new DriveToDist(
-                                new DriveToDistConfig(
-                                        modeConfig.getJSONObject("drive"),
-                                        driveController),
-                                mDriveBase),
-                        new TurnToHeading(
-                                new TurnToHeadingConfig(
-                                        modeConfig.getJSONObject("turn"),
-                                        staticTurnController),
-                                mDriveBase),
-                        new WaitForDriveStopped(
-                                new WaitForDriveStoppedConfig(modeConfig.getJSONObject("stop")),
-                                mDriveBase) */
-                }),
-                new StopDrive(mDriveBase),
+                new FireAndRetract(mRobot.getShooter()),
                 new NoOp()
         });
     }

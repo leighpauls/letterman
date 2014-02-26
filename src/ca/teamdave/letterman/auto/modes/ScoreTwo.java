@@ -2,13 +2,16 @@ package ca.teamdave.letterman.auto.modes;
 
 import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.auto.commands.NoOp;
+import ca.teamdave.letterman.auto.commands.blocker.BlockerTravelPosition;
 import ca.teamdave.letterman.auto.commands.hotness.TriggerHotnessDecision;
 import ca.teamdave.letterman.auto.commands.drive.*;
 import ca.teamdave.letterman.auto.commands.dummy.DummyShoot;
 import ca.teamdave.letterman.auto.commands.hotness.TurnToHotness;
+import ca.teamdave.letterman.auto.commands.intake.IntakeRunPickup;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
 import ca.teamdave.letterman.auto.commands.meta.Pause;
 import ca.teamdave.letterman.auto.commands.meta.Series;
+import ca.teamdave.letterman.auto.commands.shoot.FireHelper;
 import ca.teamdave.letterman.config.command.*;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
@@ -95,19 +98,24 @@ public class ScoreTwo implements AutoMode {
                         }),
 
                         new StopDrive(driveBase),
-                        new DummyShoot(),
+                        FireHelper.getFireCommand(
+                                mRobot.getBlocker(),
+                                mRobot.getIntake(),
+                                mRobot.getShooter()),
 
-                        // TODO: run pickup here
-                        new Latch(new AutoCommand[] {
+
+                        new Latch(new AutoCommand[]{
+                                new BlockerTravelPosition(mRobot.getBlocker()),
+                                new IntakeRunPickup(mRobot.getIntake()),
                                 new TrackLine(driveBackConfig, driveBase),
                                 new WaitForRegion(driveBackRegionConfig, driveBase)
                         }),
 
-                        // TODO: stop running pickup here
                         new Latch(new AutoCommand[]{
                                 new TrackLine(driveOutConfig, driveBase),
                                 new WaitForRegion(driveOutRegionConfig, driveBase)
                         }),
+
                         new StopDrive(driveBase),
 
                         new Latch(new AutoCommand[]{
@@ -115,7 +123,10 @@ public class ScoreTwo implements AutoMode {
                                 new WaitForDriveStopped(aimingStopConfig, driveBase)
                         }),
                         new StopDrive(driveBase),
-                        new DummyShoot()
+                        FireHelper.getFireCommand(
+                                mRobot.getBlocker(),
+                                mRobot.getIntake(),
+                                mRobot.getShooter())
                 }),
                 new Series(new AutoCommand[] {
                         new Pause(HotnessTracker.HOTNESS_TRIGGER_TIME),

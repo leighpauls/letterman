@@ -39,9 +39,9 @@ public class AutoModeSelector implements BackgroundUpdatingComponent {
 
     public void resetModes(Robot robot, JSONObject autoConfig) {
         mAutoModes = new AutoMode[] {
-                new ScoreOne(robot, autoConfig),
                 new ScoreTwo(robot, autoConfig),
-                new TestMode(robot.getDriveBase(), autoConfig),
+                new TestMode(robot, autoConfig),
+                new ScoreOne(robot, autoConfig),
         };
     }
 

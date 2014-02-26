@@ -25,6 +25,7 @@ public class WaitForDriveStopped implements AutoCommand {
                 Math.abs(mDriveBase.getTurnVelocity()) > mTurnStopSpeed) {
             return Completion.RUNNING;
         }
+        System.out.println("Drive stopped");
         return Completion.FINISHED;
     }
 }
