@@ -8,6 +8,7 @@ import ca.teamdave.letterman.robotcomponents.camera.CameraThread;
 import ca.teamdave.letterman.robotcomponents.camera.PairTargetResult;
 import ca.teamdave.letterman.robotcomponents.camera.StaticTargetResult;
 import ca.teamdave.letterman.robotcomponents.camera.TargetSide;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 
 /**
  * Handles the detection of the hot goal target
@@ -70,6 +71,11 @@ public class HotnessTracker implements BackgroundUpdatingComponent {
                 mInferredGoalHotness = GoalHotnessState.LEFT_HOT;
             }
         }
+
+        DriverStationLCD.getInstance().println(
+                DriverStationLCD.Line.kUser4,
+                1,
+                "I: " + mInferredGoalHotness + " V: " + mVisibleGoalHotness + "         ");
         mPrevModeTime = modeTime;
     }
 
