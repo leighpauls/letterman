@@ -11,17 +11,17 @@ package ca.teamdave.letterman;
 import ca.teamdave.letterman.auto.AutoModeRunner;
 import ca.teamdave.letterman.auto.AutoModeSelector;
 import ca.teamdave.letterman.auto.modes.AutoMode;
-import ca.teamdave.letterman.auto.modes.ScoreTwo;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.ConfigLoader;
+import ca.teamdave.letterman.config.component.BaseLockConfig;
 import ca.teamdave.letterman.config.component.BlockerControlConfig;
 import ca.teamdave.letterman.config.component.RobotConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
 import ca.teamdave.letterman.descriptors.RobotPosition;
+import ca.teamdave.letterman.robotcomponents.BaseLock;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
 import ca.teamdave.letterman.robotcomponents.Robot;
-import ca.teamdave.letterman.robotcomponents.Shooter;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
@@ -41,6 +41,8 @@ public class LettermanMain extends IterativeRobot {
     private AutoModeSelector mAutoModeSelector;
     private DriverStationLCD mDriverStationLCD;
     private DriveBase.GearState mAutoShiftMode;
+
+    private BaseLock mBaseLock;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -70,25 +72,25 @@ public class LettermanMain extends IterativeRobot {
 
     private void reloadConfig() {
         // TODO: before competition; only load the config file on disabled-init
-        // get the latest auton config file version
         ConfigLoader.getInstance().loadConfigFromFile();
+
         try {
             mAutoModeSelector.resetModes(
                     mRobot,
                     ConfigLoader.getInstance().getConfigObject("auto"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to parse robot config");
-        }
 
-        // reload the control config
-        ConfigLoader.getInstance().loadConfigFromFile();
-        try {
             JSONObject blockerControlJson = ConfigLoader.getInstance()
                     .getConfigObject("robotConfig")
                     .getJSONObject("blockerConfig")
                     .getJSONObject("control");
             mRobot.getBlocker().setControlConfig(new BlockerControlConfig(blockerControlJson));
+
+            mBaseLock = new BaseLock(
+                    new BaseLockConfig(
+                            ConfigLoader.getInstance()
+                                    .getConfigObject("robotConfig")
+                                    .getJSONObject("baseLock")),
+                    mRobot.getDriveBase());
         } catch (JSONException e) {
             e.printStackTrace();
             throw new RuntimeException("Failed to parse blocker control config");
@@ -134,6 +136,9 @@ public class LettermanMain extends IterativeRobot {
         if (mController.getLeftStickButton()) {
             // manual override to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
+        } else if (mController.getLeftBumper()) {
+            // base lock-> low gear
+            mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
         } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.2) {
             // hysteresis transition to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
@@ -147,10 +152,18 @@ public class LettermanMain extends IterativeRobot {
 
     /** Called every 20ms in teleop */
     public void teleopPeriodic() {
-        BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
+        double deltaTime = BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
 
         // drive control
-        mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
+        if (mController.getLeftBumper()) {
+            // base lock
+            // TODO: setpoint manual tuning
+            mBaseLock.update(deltaTime);
+        } else {
+            // normal driving
+            mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
+            mBaseLock.deactivate();
+        }
         updateTransmission();
 
         // Shooter control
@@ -191,11 +204,13 @@ public class LettermanMain extends IterativeRobot {
                 mRobot.getIntake().latchIn();
             } else if (mController.getAButton() || mController.getRightStickButton()) {
                 mRobot.getIntake().pickup();
+            } else if (mController.getYButton()) {
+                mRobot.getIntake().latchOut();
+            } else if (mController.getBButton() || mController.getXButton()) {
+                mRobot.getIntake().latchIn();
             }
         }
-
     }
-
 
     public void disabledInit() {
         mAutoModeRunner = null;

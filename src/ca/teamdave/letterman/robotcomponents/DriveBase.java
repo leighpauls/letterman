@@ -99,6 +99,10 @@ public class DriveBase implements BackgroundUpdatingComponent {
         return mGyroRate;
     }
 
+    public double getEncoderPosition() {
+        return (mLeft.getPosition() + mRight.getPosition()) / 2;
+    }
+
     public static class GearState extends EnumerationClass {
         protected GearState(String name) {
             super(name);

@@ -52,10 +52,10 @@
       },
       "control": {
         "degreesPerVolt": 60.40,
-        "offsetDegrees": -63,
+        "offsetDegrees": -24,
         "invertOutput": false,
         "pidConfig": {
-          "p": 0.025,
+          "p": 0.04,
           "i": 0.0,
           "d": 0.002
         },
@@ -72,6 +72,19 @@
       "armOutRelay": 3,
       "retractionTime": 0.75,
       "extensionTime": 0.35
+    },
+
+    "baseLock": {
+      "forwardControl": {
+        "p": 5,
+        "i": 0,
+        "d": 0
+      },
+       "turnControl": {
+        "p": 0.01,
+        "i": 0,
+        "d": 0
+      }
     }
   },
 
