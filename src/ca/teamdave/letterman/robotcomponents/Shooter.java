@@ -173,8 +173,8 @@ public class Shooter implements BackgroundUpdatingComponent {
      */
     public boolean tryRetracting(boolean forceUnlatch) {
         if (mState == FiringState.READY_TO_FIRE
-                || mState == FiringState.LATCHED_STOP
-                || (mState == FiringState.FORCE_FEED && !forceUnlatch)) {
+                || (mState == FiringState.LATCHED_STOP && !forceUnlatch)
+                || mState == FiringState.FORCE_FEED) {
             // won't override these states to retract
             return false;
         }
@@ -194,4 +194,7 @@ public class Shooter implements BackgroundUpdatingComponent {
         return mCurShotId;
     }
 
+    public boolean isReadyOrRetracting() {
+        return mState == FiringState.READY_TO_FIRE || mState == FiringState.RETRACTING;
+    }
 }

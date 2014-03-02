@@ -86,6 +86,7 @@ public class ScoreTwo implements AutoMode {
 
         return new Latch(new AutoCommand[] {
                 new Series(new AutoCommand[] {
+
                         new Latch(new AutoCommand[]{
                                 new TrackLine(driveOutConfig, driveBase),
                                 new WaitForRegion(driveOutRegionConfig, driveBase)
