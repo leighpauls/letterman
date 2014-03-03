@@ -68,6 +68,8 @@ public class LettermanMain extends IterativeRobot {
         }
 
         mRobot.getShooter().latchStop();
+
+        reloadConfig();
     }
 
     private void reloadConfig() {
@@ -126,8 +128,6 @@ public class LettermanMain extends IterativeRobot {
         mRobot.getBlocker().setManualControl(0.0);
         mRobot.getShooter().latchStop();
         mRobot.getIntake().latchIn();
-
-        reloadConfig();
     }
 
     private void updateTransmission() {
@@ -213,8 +213,10 @@ public class LettermanMain extends IterativeRobot {
     }
 
     public void disabledInit() {
+        reloadConfig();
         mAutoModeRunner = null;
         mRobot.getShooter().latchStop();
+
     }
     /** Called every 20ms in disabled */
     public void disabledPeriodic() {

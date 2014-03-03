@@ -7,11 +7,14 @@ import ca.teamdave.letterman.auto.commands.hotness.TriggerHotnessDecision;
 import ca.teamdave.letterman.auto.commands.drive.*;
 import ca.teamdave.letterman.auto.commands.dummy.DummyShoot;
 import ca.teamdave.letterman.auto.commands.hotness.TurnToHotness;
+import ca.teamdave.letterman.auto.commands.intake.IntakeLatchIn;
 import ca.teamdave.letterman.auto.commands.intake.IntakeRunPickup;
+import ca.teamdave.letterman.auto.commands.intake.IntakeShootPosition;
 import ca.teamdave.letterman.auto.commands.meta.Latch;
 import ca.teamdave.letterman.auto.commands.meta.Pause;
 import ca.teamdave.letterman.auto.commands.meta.Series;
 import ca.teamdave.letterman.auto.commands.shoot.FireHelper;
+import ca.teamdave.letterman.auto.commands.shoot.StartRetract;
 import ca.teamdave.letterman.config.command.*;
 import ca.teamdave.letterman.config.control.PidControllerConfig;
 import ca.teamdave.letterman.descriptors.RobotPose;
@@ -84,56 +87,63 @@ public class ScoreTwo implements AutoMode {
 
         DriveBase driveBase = mRobot.getDriveBase();
 
-        return new Latch(new AutoCommand[] {
-                new Series(new AutoCommand[] {
+        return new Series(new AutoCommand[] {
+                // trap the ball
+                new StartRetract(mRobot.getShooter()),
 
-                        new Latch(new AutoCommand[]{
-                                new TrackLine(driveOutConfig, driveBase),
-                                new WaitForRegion(driveOutRegionConfig, driveBase)
-                        }),
-                        new StopDrive(driveBase),
-
-                        new Latch(new AutoCommand[]{
-                                new TurnToHotness(aimingTurnConfig, mRobot),
-                                new WaitForDriveStopped(aimingStopConfig, driveBase)
-                        }),
-
-                        new StopDrive(driveBase),
-                        FireHelper.getFireCommand(
-                                mRobot.getBlocker(),
-                                mRobot.getIntake(),
-                                mRobot.getShooter()),
-
-
-                        new Latch(new AutoCommand[]{
+                new Latch(new AutoCommand[]{
+                        new Series(new AutoCommand[]{
                                 new BlockerTravelPosition(mRobot.getBlocker()),
-                                new IntakeRunPickup(mRobot.getIntake()),
-                                new TrackLine(driveBackConfig, driveBase),
-                                new WaitForRegion(driveBackRegionConfig, driveBase)
+                                new IntakeShootPosition(mRobot.getIntake()),
+                                new Pause(1.0),
+                                new IntakeLatchIn(mRobot.getIntake()),
+                                new TriggerHotnessDecision(mRobot.getHotnessTracker()),
+                                new Pause(1.0)
                         }),
-
-                        new Latch(new AutoCommand[]{
-                                new TrackLine(driveOutConfig, driveBase),
-                                new WaitForRegion(driveOutRegionConfig, driveBase)
+                        new Series(new AutoCommand[] {
+                                new Latch(new AutoCommand[]{
+                                        new TrackLine(driveOutConfig, driveBase),
+                                        new WaitForRegion(driveOutRegionConfig, driveBase)
+                                }),
+                                new StopDrive(driveBase)
                         }),
-
-                        new StopDrive(driveBase),
-
-                        new Latch(new AutoCommand[]{
-                                new TurnToHotness(aimingTurnConfig, mRobot),
-                                new WaitForDriveStopped(aimingStopConfig, driveBase)
-                        }),
-                        new StopDrive(driveBase),
-                        FireHelper.getFireCommand(
-                                mRobot.getBlocker(),
-                                mRobot.getIntake(),
-                                mRobot.getShooter())
                 }),
-                new Series(new AutoCommand[] {
-                        new Pause(HotnessTracker.HOTNESS_TRIGGER_TIME),
-                        new TriggerHotnessDecision(mRobot.getHotnessTracker()),
-                        new NoOp()
-                })
+
+                new Latch(new AutoCommand[]{
+                        new TurnToHotness(aimingTurnConfig, mRobot),
+                        new WaitForDriveStopped(aimingStopConfig, driveBase)
+                }),
+
+                new StopDrive(driveBase),
+                FireHelper.getFireCommand(
+                        mRobot.getBlocker(),
+                        mRobot.getIntake(),
+                        mRobot.getShooter()),
+
+
+                new Latch(new AutoCommand[]{
+                        new BlockerTravelPosition(mRobot.getBlocker()),
+                        new IntakeRunPickup(mRobot.getIntake()),
+                        new TrackLine(driveBackConfig, driveBase),
+                        new WaitForRegion(driveBackRegionConfig, driveBase)
+                }),
+
+                new Latch(new AutoCommand[]{
+                        new TrackLine(driveOutConfig, driveBase),
+                        new WaitForRegion(driveOutRegionConfig, driveBase)
+                }),
+
+                new StopDrive(driveBase),
+
+                new Latch(new AutoCommand[]{
+                        new TurnToHotness(aimingTurnConfig, mRobot),
+                        new WaitForDriveStopped(aimingStopConfig, driveBase)
+                }),
+                new StopDrive(driveBase),
+                FireHelper.getFireCommand(
+                        mRobot.getBlocker(),
+                        mRobot.getIntake(),
+                        mRobot.getShooter())
         });
     }
 }
