@@ -21,7 +21,8 @@ public class WaitForHotness implements AutoCommand {
     }
 
     public Completion runStep(double deltaTime) {
-        if (mHotnessTracker.getInferredGoalHotness() == mDesiredState) {
+        GoalHotnessState curState = mHotnessTracker.getInferredGoalHotness();
+        if (curState == mDesiredState || curState == GoalHotnessState.UNCERTAIN) {
             return Completion.FINISHED;
         }
         // TODO: see if that hotness has already passed

@@ -54,7 +54,7 @@ public class CameraThread implements Runnable {
         while (true) {
             try {
                 ColorImage rawImage = camera.getImage();
-                BinaryImage thresholdedImage = rawImage.thresholdRGB(0, 50, 121, 255, 0, 255);
+                BinaryImage thresholdedImage = rawImage.thresholdRGB(0, 66, 63, 255, 82, 255);
                 BinaryImage particleFilteredImage = thresholdedImage.particleFilter(
                         criteriaCollection);
                 ParticleAnalysisReport[] particles =
