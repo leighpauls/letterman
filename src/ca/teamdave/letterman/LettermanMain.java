@@ -139,10 +139,10 @@ public class LettermanMain extends IterativeRobot {
         } else if (mController.getLeftBumper()) {
             // base lock-> low gear
             mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
-        } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.2) {
+        } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.0) {
             // hysteresis transition to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
-        } else if (mAutoShiftMode == DriveBase.GearState.HIGH_GEAR && absSpeed < 4.5) {
+        } else if (mAutoShiftMode == DriveBase.GearState.HIGH_GEAR && absSpeed < 4.2) {
             // hysteresis transition to low
             mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
         }

@@ -6,8 +6,8 @@
     "driveBaseConfig": {
       "gyroChannel": 1,
       "gyroVoltSecondsPerDegree": 0.007,
-      "highGearSolenoid": 1,
-      "lowGearSolenoid": 2,
+      "highGearSolenoid": 2,
+      "lowGearSolenoid": 1,
 
       "rightWheelSet": {
         "victorChannels": [5, 6, 7],
@@ -23,7 +23,7 @@
         "outputInverted": false,
         "encoderA": 5,
         "encoderB": 6,
-        "inputInverted": true,
+        "inputInverted": false,
         "ticksPerFoot": 1886.0
       },
 
@@ -52,8 +52,8 @@
       },
       "control": {
         "degreesPerVolt": 60.40,
-        "offsetDegrees": -24,
-        "invertOutput": false,
+        "offsetDegrees": -78,
+        "invertOutput": true,
         "pidConfig": {
           "p": 0.04,
           "i": 0.0,
@@ -95,7 +95,7 @@
       "d": 0.001
     },
     "staticTurnPid": {
-      "p": 0.02,
+      "p": 0.03,
       "i": 0.001,
       "d": 0.0
     },
@@ -118,7 +118,7 @@
         "forwardSpeed": 4
       },
       "waitForRegion": {
-        "x1": 5, "y1": -14,
+        "x1": 7, "y1": -14,
         "x2": 18, "y2": 14
       },
       "stop": {
