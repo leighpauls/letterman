@@ -7,6 +7,7 @@ import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.background.RobotMode;
 import ca.teamdave.letterman.config.component.ShooterConfig;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Victor;
 
 /**
@@ -69,6 +70,12 @@ public class Shooter implements BackgroundUpdatingComponent {
     }
 
     public void updateComponent(RobotMode mode, double modeTime, double deltaTime) {
+        DriverStationLCD.getInstance().println(
+                DriverStationLCD.Line.kUser5,
+                1,
+                "Reed: " + (!mReadyPositionSwitch.get()));
+        DriverStationLCD.getInstance().updateLCD();
+        
         // update the state machine
         if (mState == FiringState.FIRING) {
 

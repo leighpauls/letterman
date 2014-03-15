@@ -52,7 +52,7 @@
       },
       "control": {
         "degreesPerVolt": 60.40,
-        "offsetDegrees": -78,
+        "offsetDegrees": -38,
         "invertOutput": true,
         "pidConfig": {
           "p": 0.04,

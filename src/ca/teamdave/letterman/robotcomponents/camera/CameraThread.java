@@ -39,7 +39,7 @@ public class CameraThread implements Runnable {
     public CameraThread() {
         mTargetInfoDelegate = new TargetInfoDelegate();
         mThread = new Thread(this);
-        mThread.start();
+        // mThread.start();
     }
 
     public TargetInfoDelegate getTargetInfoDelegate() {

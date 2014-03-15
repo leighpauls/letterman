@@ -39,8 +39,8 @@ public class AutoModeSelector implements BackgroundUpdatingComponent {
 
     public void resetModes(Robot robot, JSONObject autoConfig) {
         mAutoModes = new AutoMode[] {
-                new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.LEFT),
-                new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.RIGHT),
+                // new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.LEFT),
+                // new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.RIGHT),
                 new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.IMMEDIATE),
                 new ScoreTwo(robot, autoConfig),
                 new TestMode(robot, autoConfig),
