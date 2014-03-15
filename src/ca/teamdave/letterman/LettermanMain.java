@@ -130,14 +130,16 @@ public class LettermanMain extends IterativeRobot {
         mRobot.getIntake().latchIn();
     }
 
-    private void updateTransmission() {
-        double absSpeed = Math.abs(mRobot.getDriveBase().getForwardVelocity());
+    private void updateTransmission(double forwardPower) {
+        double velocity = mRobot.getDriveBase().getForwardVelocity();
+        double absSpeed = Math.abs(velocity);
+        boolean beingPushed = (forwardPower * velocity < 0);
 
         if (mController.getLeftStickButton()) {
             // manual override to high
             mAutoShiftMode = DriveBase.GearState.HIGH_GEAR;
-        } else if (mController.getLeftBumper()) {
-            // base lock-> low gear
+        } else if (mController.getLeftBumper() || beingPushed) {
+            // base lock or pushing match -> low gear
             mAutoShiftMode = DriveBase.GearState.LOW_GEAR;
         } else if (mAutoShiftMode == DriveBase.GearState.LOW_GEAR && absSpeed > 5.2) {
             // hysteresis transition to high
@@ -154,6 +156,8 @@ public class LettermanMain extends IterativeRobot {
     public void teleopPeriodic() {
         double deltaTime = BackgroundUpdateManager.getInstance().runUpdates(RobotMode.TELEOP);
 
+        double forwardPower = -mController.getYLeft();
+
         // drive control
         if (mController.getLeftBumper()) {
             // base lock
@@ -161,10 +165,10 @@ public class LettermanMain extends IterativeRobot {
             mBaseLock.update(deltaTime);
         } else {
             // normal driving
-            mRobot.getDriveBase().setArcade(-mController.getYLeft(), mController.getXLeft());
+            mRobot.getDriveBase().setArcade(forwardPower, mController.getXLeft());
             mBaseLock.deactivate();
         }
-        updateTransmission();
+        updateTransmission(forwardPower);
 
         // Shooter control
         boolean rightBumper = mController.getRightBumper();
