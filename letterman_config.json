@@ -127,7 +127,7 @@
       }
     },
 
-    "scoreTwo": {
+    "scoreTwoDumb": {
       "driveOut": {
         "trackLine": {
           "lineOrigin": {
@@ -142,15 +142,9 @@
           "x2": 18, "y2": 14
         }
       },
-      "aiming": {
-        "turn": {
-          "heading": 20,
-          "completionErrorAngle": 5
-        },
-        "stop": {
-          "forwardStopSpeed": 0.2,
-          "turnStopSpeed": 10
-        }
+      "stop": {
+        "forwardStopSpeed": 0.2,
+        "turnStopSpeed": 10
       },
       "driveBack": {
         "trackLine": {

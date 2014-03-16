@@ -73,7 +73,7 @@ public class Shooter implements BackgroundUpdatingComponent {
         DriverStationLCD.getInstance().println(
                 DriverStationLCD.Line.kUser5,
                 1,
-                "Reed: " + (!mReadyPositionSwitch.get()));
+                "Reed: " + (!mReadyPositionSwitch.get()) + "         ");
         DriverStationLCD.getInstance().updateLCD();
         
         // update the state machine

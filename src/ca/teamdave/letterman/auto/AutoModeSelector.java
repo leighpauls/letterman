@@ -1,10 +1,7 @@
 package ca.teamdave.letterman.auto;
 
 import ca.teamdave.letterman.XboxGamePad;
-import ca.teamdave.letterman.auto.modes.AutoMode;
-import ca.teamdave.letterman.auto.modes.ScoreOne;
-import ca.teamdave.letterman.auto.modes.ScoreTwo;
-import ca.teamdave.letterman.auto.modes.TestMode;
+import ca.teamdave.letterman.auto.modes.*;
 import ca.teamdave.letterman.background.BackgroundUpdateManager;
 import ca.teamdave.letterman.background.BackgroundUpdatingComponent;
 import ca.teamdave.letterman.background.RobotMode;
@@ -39,10 +36,8 @@ public class AutoModeSelector implements BackgroundUpdatingComponent {
 
     public void resetModes(Robot robot, JSONObject autoConfig) {
         mAutoModes = new AutoMode[] {
-                // new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.LEFT),
-                // new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.RIGHT),
+                new ScoreTwoDumb(robot, autoConfig),
                 new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.IMMEDIATE),
-                new ScoreTwo(robot, autoConfig),
                 new TestMode(robot, autoConfig),
         };
     }
