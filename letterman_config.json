@@ -12,17 +12,17 @@
       "rightWheelSet": {
         "victorChannels": [5, 6, 7],
         "outputInverted": true,
-        "encoderA": 5,
-        "encoderB": 6,
-        "inputInverted": true,
+        "encoderA": 3,
+        "encoderB": 4,
+        "inputInverted": false,
         "ticksPerFoot": 1886.0
       },
 
       "leftWheelSet": {
         "victorChannels": [1, 2, 3],
         "outputInverted": false,
-        "encoderA": 3,
-        "encoderB": 4,
+        "encoderA": 5,
+        "encoderB": 6,
         "inputInverted": false,
         "ticksPerFoot": 1886.0
       },
@@ -53,7 +53,7 @@
       "control": {
         "degreesPerVolt": 60.40,
         "offsetDegrees": -38,
-        "invertOutput": false,
+        "invertOutput": true,
         "pidConfig": {
           "p": 0.04,
           "i": 0.0,
