@@ -160,6 +160,18 @@
           "x2": -9, "y2": 14
         }
       }
+    },
+    "driveStraight": {
+      "trackLine": {
+        "lineOrigin": {"x": 0, "y": 0},
+        "lineDirection": 0,
+        "degreesPerFootError": 4,
+        "forwardSpeed": 4
+      },
+      "waitForRegion": {
+        "x1": 7, "y1": -14,
+        "x2": 18, "y2": 14
+      }
     }
   }
 }

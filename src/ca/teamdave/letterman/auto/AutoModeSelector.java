@@ -38,6 +38,7 @@ public class AutoModeSelector implements BackgroundUpdatingComponent {
         mAutoModes = new AutoMode[] {
                 new ScoreTwoDumb(robot, autoConfig),
                 new ScoreOne(robot, autoConfig, ScoreOne.SideSelection.IMMEDIATE),
+                new DriveStraight(robot, autoConfig),
                 new TestMode(robot, autoConfig),
         };
     }
