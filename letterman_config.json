@@ -52,7 +52,7 @@
       },
       "control": {
         "degreesPerVolt": 60.40,
-        "offsetDegrees": -38,
+        "offsetDegrees": -33,
         "invertOutput": true,
         "pidConfig": {
           "p": 0.04,
@@ -138,7 +138,7 @@
           "forwardSpeed": 9
         },
         "waitForRegion": {
-          "x1": 5, "y1": -14,
+          "x1": 4, "y1": -14,
           "x2": 18, "y2": 14
         }
       },
@@ -156,7 +156,7 @@
           "forwardSpeed": -4.5
         },
         "waitForRegion": {
-          "x1": -1.0, "y1": -14,
+          "x1": -2.0, "y1": -14,
           "x2": -9, "y2": 14
         }
       }
