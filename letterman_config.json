@@ -115,7 +115,7 @@
         "lineOrigin": {"x": 0, "y": 0},
         "lineDirection": 0,
         "degreesPerFootError": 4,
-        "forwardSpeed": 4
+        "forwardSpeed": 9
       },
       "waitForRegion": {
         "x1": 7, "y1": -14,
@@ -138,7 +138,7 @@
           "forwardSpeed": 9
         },
         "waitForRegion": {
-          "x1": 4, "y1": -14,
+          "x1": 4.5, "y1": -14,
           "x2": 18, "y2": 14
         }
       },

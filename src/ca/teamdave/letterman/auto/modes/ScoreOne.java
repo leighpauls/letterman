@@ -71,10 +71,10 @@ public class ScoreOne implements AutoMode {
                         new Series(new AutoCommand[] {
                                 new BlockerTravelPosition(mRobot.getBlocker()),
                                 new IntakeShootPosition(mRobot.getIntake()),
-                                new Pause(1.0),
+                                new Pause(1.5),
                                 new IntakeLatchIn(mRobot.getIntake()),
                                 new TriggerHotnessDecision(mRobot.getHotnessTracker()),
-                                new Pause(1.0)
+                                new Pause(0.75)
                         }),
                         new Series(new AutoCommand[] {
                                 new Latch(new AutoCommand[] {
