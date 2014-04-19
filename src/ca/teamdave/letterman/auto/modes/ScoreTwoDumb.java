@@ -6,7 +6,6 @@ import ca.teamdave.letterman.auto.commands.drive.StopDrive;
 import ca.teamdave.letterman.auto.commands.drive.TrackLine;
 import ca.teamdave.letterman.auto.commands.drive.WaitForDriveStopped;
 import ca.teamdave.letterman.auto.commands.drive.WaitForRegion;
-import ca.teamdave.letterman.auto.commands.hotness.TurnToHotness;
 import ca.teamdave.letterman.auto.commands.intake.IntakeLatchIn;
 import ca.teamdave.letterman.auto.commands.intake.IntakeRunPickup;
 import ca.teamdave.letterman.auto.commands.intake.IntakeShootPosition;

@@ -22,6 +22,7 @@ import ca.teamdave.letterman.descriptors.RobotPosition;
 import ca.teamdave.letterman.robotcomponents.BaseLock;
 import ca.teamdave.letterman.robotcomponents.DriveBase;
 import ca.teamdave.letterman.robotcomponents.Robot;
+import com.team254.lib.CheesyVisionServer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.json.me.JSONException;
@@ -69,6 +70,7 @@ public class LettermanMain extends IterativeRobot {
 
         mRobot.getShooter().latchStop();
 
+        CheesyVisionServer.getInstance().start();
         reloadConfig();
     }
 
@@ -102,7 +104,7 @@ public class LettermanMain extends IterativeRobot {
     /** Called once at the start of auto */
     public void autonomousInit() {
         System.out.println("Auto Init running");
-
+        CheesyVisionServer.getInstance().reset();
 
         mRobot.getShooter().latchStop();
         mRobot.getIntake().latchIn();

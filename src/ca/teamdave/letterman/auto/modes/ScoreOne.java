@@ -4,7 +4,6 @@ import ca.teamdave.letterman.EnumerationClass;
 import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.auto.commands.NoOp;
 import ca.teamdave.letterman.auto.commands.blocker.BlockerTravelPosition;
-import ca.teamdave.letterman.auto.commands.hotness.TriggerHotnessDecision;
 import ca.teamdave.letterman.auto.commands.hotness.WaitForHotness;
 import ca.teamdave.letterman.auto.commands.intake.IntakeLatchIn;
 import ca.teamdave.letterman.auto.commands.intake.IntakeShootPosition;
@@ -73,7 +72,6 @@ public class ScoreOne implements AutoMode {
                                 new IntakeShootPosition(mRobot.getIntake()),
                                 new Pause(1.5),
                                 new IntakeLatchIn(mRobot.getIntake()),
-                                new TriggerHotnessDecision(mRobot.getHotnessTracker()),
                                 new Pause(0.75)
                         }),
                         new Series(new AutoCommand[] {
@@ -99,7 +97,6 @@ public class ScoreOne implements AutoMode {
                 (mSideSelection == SideSelection.IMMEDIATE
                         ? (AutoCommand) new NoOp()
                         : new WaitForHotness(
-                        mRobot.getHotnessTracker(),
                         (mSideSelection == SideSelection.LEFT
                                 ? GoalHotnessState.LEFT_HOT
                                 : GoalHotnessState.RIGHT_HOT))),

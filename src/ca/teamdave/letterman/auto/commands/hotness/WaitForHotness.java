@@ -2,17 +2,15 @@ package ca.teamdave.letterman.auto.commands.hotness;
 
 import ca.teamdave.letterman.auto.commands.AutoCommand;
 import ca.teamdave.letterman.descriptors.GoalHotnessState;
-import ca.teamdave.letterman.robotcomponents.HotnessTracker;
+import com.team254.lib.CheesyVisionServer;
 
 /**
  * Wait until the specified goal is hot
  */
 public class WaitForHotness implements AutoCommand {
-    private final HotnessTracker mHotnessTracker;
     private final GoalHotnessState mDesiredState;
 
-    public WaitForHotness(HotnessTracker hotnessTracker, GoalHotnessState desiredState) {
-        mHotnessTracker = hotnessTracker;
+    public WaitForHotness(GoalHotnessState desiredState) {
         mDesiredState = desiredState;
     }
 
@@ -21,12 +19,14 @@ public class WaitForHotness implements AutoCommand {
     }
 
     public Completion runStep(double deltaTime) {
-        GoalHotnessState curState = mHotnessTracker.getInferredGoalHotness();
-        if (curState == mDesiredState || curState == GoalHotnessState.UNCERTAIN) {
-            System.out.println("done waiting");
+        boolean leftStatus = CheesyVisionServer.getInstance().getLeftStatus();
+        boolean rightStatus = CheesyVisionServer.getInstance().getRightStatus();
+
+        if ((mDesiredState == GoalHotnessState.LEFT_HOT && leftStatus && (!rightStatus))
+                || (mDesiredState == GoalHotnessState.RIGHT_HOT && rightStatus && (!leftStatus))) {
             return Completion.FINISHED;
         }
-        // TODO: see if that hotness has already passed
+
         return Completion.RUNNING;
     }
 }
