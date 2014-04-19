@@ -192,7 +192,7 @@ public class LettermanMain extends IterativeRobot {
         double rightStickPosition = mController.getYRight();
         if (mController.getXButton()) {
             mRobot.getBlocker().setTravelPosition();
-        } else if (mController.getYButton()) {
+        } else if (mController.getYButton() || mController.getRightStickButton()) {
             mRobot.getBlocker().setCatchPosition();
         } else if (mController.getBButton()) {
             mRobot.getBlocker().setBlockPosition();
@@ -208,11 +208,13 @@ public class LettermanMain extends IterativeRobot {
                 mRobot.getIntake().latchOut();
             } else if (mController.getDPadRight()) {
                 mRobot.getIntake().latchIn();
-            } else if (mController.getAButton() || mController.getRightStickButton()) {
+            } else if (mController.getAButton()) {
                 mRobot.getIntake().pickup();
             } else if (mController.getYButton()) {
                 mRobot.getIntake().latchOut();
-            } else if (mController.getBButton() || mController.getXButton()) {
+            } else if (mController.getBButton()
+                    || mController.getXButton()
+                    || mController.getRightStickButton()) {
                 mRobot.getIntake().latchIn();
             }
         }
